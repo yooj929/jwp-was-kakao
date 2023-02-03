@@ -1,10 +1,8 @@
 package webserver;
 
-import db.DataBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.FileIoUtils;
-import utils.UserFactory;
 
 import java.io.*;
 import java.net.Socket;
@@ -14,9 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static db.DataBase.*;
+import static db.DataBase.addUser;
+import static db.DataBase.findUserById;
 import static utils.IOUtils.readData;
-import static utils.UserFactory.*;
+import static utils.UserFactory.createUser;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
@@ -74,6 +73,8 @@ public class RequestHandler implements Runnable {
 
                 line = br.readLine();
             }
+            DataOutputStream dos = new DataOutputStream(out);
+            byte[] body = null;
 
             if(method.equals("POST")){
                 String result = readData(br, Integer.valueOf(contentLength));
@@ -89,11 +90,11 @@ public class RequestHandler implements Runnable {
                 addUser(createUser(params));
 
                 logger.info("USER : {}", findUserById(params.get("userId")));
+                response302Header(dos, "/index.html");
                 return;
             }
 
-            DataOutputStream dos = new DataOutputStream(out);
-            byte[] body = null;
+
             if(path.equals("/")) {
                 body = "Hello world".getBytes();
                 response200Header(dos, body.length);
@@ -127,6 +128,16 @@ public class RequestHandler implements Runnable {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
             dos.writeBytes("Content-Type: text/html;charset=utf-8 \r\n");
             dos.writeBytes("Content-Length: " + lengthOfBodyContent + " \r\n");
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    private void response302Header(DataOutputStream dos, String redirectUrl) {
+        try {
+            dos.writeBytes("HTTP/1.1 302 Found \r\n");
+            dos.writeBytes(String.format("Location: %s", redirectUrl));
             dos.writeBytes("\r\n");
         } catch (IOException e) {
             logger.error(e.getMessage());
