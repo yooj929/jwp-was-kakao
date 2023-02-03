@@ -1,13 +1,13 @@
-package utils;
+package utils.response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class ResponseBodies {
+public class ResponseBodyUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(ResponseBodies.class);
+    private static final Logger logger = LoggerFactory.getLogger(ResponseBodyUtils.class);
 
     public static void responseBody(DataOutputStream dos, byte[] body) {
         try {

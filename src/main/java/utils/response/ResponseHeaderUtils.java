@@ -1,4 +1,4 @@
-package utils;
+package utils.response;
 
 import org.slf4j.LoggerFactory;
 
@@ -6,11 +6,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import org.slf4j.Logger;
 
-public class ResponseHeaders {
+public class ResponseHeaderUtils {
 
-    private static final Logger logger = LoggerFactory.getLogger(ResponseHeaders.class);
+    private static final Logger logger = LoggerFactory.getLogger(ResponseHeaderUtils.class);
 
-    private ResponseHeaders(){}
+    private ResponseHeaderUtils(){}
 
     public static void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
         try {

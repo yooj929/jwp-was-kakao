@@ -1,5 +1,9 @@
 package webserver;
 
+import dispatcherservlet.FrontController;
+import controller.HomeController;
+import controller.StaticController;
+import controller.UserController;
 import org.junit.jupiter.api.Test;
 import support.StubSocket;
 import utils.FileIoUtils;
@@ -14,7 +18,10 @@ class RequestHandlerTest {
     void socket_out() {
         // given
         final var socket = new StubSocket();
-        final var handler = new RequestHandler(socket);
+        final var frontController = new FrontController();
+        frontController.addAll(new HomeController(), new StaticController(), new UserController());
+
+        final var handler = new RequestHandler(socket, frontController);
 
         // when
         handler.run();
@@ -42,7 +49,10 @@ class RequestHandlerTest {
                 "");
 
         final var socket = new StubSocket(httpRequest);
-        final RequestHandler handler = new RequestHandler(socket);
+        final var frontController = new FrontController();
+        frontController.addAll(new HomeController(), new StaticController(), new UserController());
+
+        final var handler = new RequestHandler(socket, frontController);
 
         // when
         handler.run();

@@ -5,10 +5,11 @@ import utils.MyHeaders;
 import utils.MyParams;
 
 import java.io.DataOutputStream;
+import utils.request.MyRequest;
 
 public interface MyController {
 
-    boolean canHandle(MyHeaders headers, MyParams params, Extension extension);
+    boolean canHandle(MyRequest myRequest);
 
-    void handle(MyHeaders headers, MyParams params, Extension extension, DataOutputStream dataOutputStream);
+    void handle(MyRequest myRequest, DataOutputStream dataOutputStream);
 }

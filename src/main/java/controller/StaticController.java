@@ -1,32 +1,30 @@
 package controller;
 
-import model.Extension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.FileIoUtils;
-import utils.MyHeaders;
-import utils.MyParams;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import utils.request.MyRequest;
 
-import static utils.ResponseBodies.responseBody;
-import static utils.ResponseHeaders.response200Header;
+import static utils.response.ResponseBodyUtils.responseBody;
+import static utils.response.ResponseHeaderUtils.response200Header;
 
 public class StaticController implements MyController{
 
     private final Logger logger = LoggerFactory.getLogger(StaticController.class);
 
     @Override
-    public boolean canHandle(MyHeaders headers, MyParams params, Extension extension) {
-        return extension.isStatic();
+    public boolean canHandle(MyRequest myRequest) {
+        return myRequest.isStatic();
     }
 
     @Override
-    public void handle(MyHeaders headers, MyParams params, Extension extension, DataOutputStream dataOutputStream) {
-        String path = headers.get("path");
-        String contentType = headers.get("contentType");
+    public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
+        String path = myRequest.getHeader("path");
+        String contentType = myRequest.getHeader("contentType");
 
         handleStatic(path, contentType, dataOutputStream);
     }
