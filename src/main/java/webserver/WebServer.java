@@ -2,6 +2,7 @@ package webserver;
 
 import controller.FrontController;
 import controller.HomeController;
+import controller.StaticController;
 import controller.UserController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ public class WebServer {
             Socket connection;
             while ((connection = listenSocket.accept()) != null) {
                 FrontController frontController = new FrontController();
-                frontController.addAll(new HomeController(), new UserController());
+                frontController.addAll(new HomeController(), new UserController(), new StaticController());
                 Thread thread = new Thread(new RequestHandler(connection, frontController));
                 thread.start();
             }

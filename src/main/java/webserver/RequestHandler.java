@@ -3,18 +3,17 @@ package webserver;
 import controller.FrontController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.*;
+import utils.MyHeaders;
+import utils.MyParams;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Objects;
 
 import static db.DataBase.addUser;
 import static utils.IOUtils.readData;
-import static utils.ResponseBodies.*;
-import static utils.ResponseHeaders.*;
+import static utils.ResponseHeaders.response302Header;
 import static utils.UserFactory.createUser;
 
 public class RequestHandler implements Runnable {
@@ -107,15 +106,9 @@ public class RequestHandler implements Runnable {
             params.put("extension", extension);
             if(frontController.canHandle(headers, params)){
                 frontController.handlerMapping(headers, params, dos);
-                return;
             }
-            body = FileIoUtils.loadFileFromClasspath("static" + path);
-            response200Header(dos, contentType, body.length);
-            responseBody(dos, body);
         } catch (IOException e) {
             logger.error(e.getMessage());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
         }
     }
 
