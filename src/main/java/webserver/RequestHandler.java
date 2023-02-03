@@ -36,8 +36,9 @@ public class RequestHandler implements Runnable {
             String line = br.readLine();
 
             boolean isFirstLine = false;
-            String path = "" , method = "", contentType= "", contentLength = "";
-            Map<String, String> params = new HashMap<>();
+            // ßString path = "" , method = "", contentType= "", contentLength = "";
+            MyParams params = new MyParams();
+
             while(!(Objects.isNull(line) || line.equals(""))){
                 logger.info(line);
 
@@ -84,12 +85,9 @@ public class RequestHandler implements Runnable {
                     params.put(keyAndValue[0], keyAndValue[1]);
                 });
 
-                params.forEach((key, value) -> logger.info("KEY : {}, VALUE = {}", key, value));
-
                 // Memory DB에 유저 데이터 저장
                 addUser(createUser(params));
 
-                logger.info("USER : {}", findUserById(params.get("userId")));
                 response302Header(dos, "/index.html");
                 return;
             }
@@ -105,6 +103,7 @@ public class RequestHandler implements Runnable {
             logger.info(path);
             String[] tokens = path.split("\\.");
             String extension = tokens[tokens.length - 1];
+            String contentType = headers.get("contentType");
             if(extension.equals("html") || extension.equals("ico")){
                 body = FileIoUtils.loadFileFromClasspath("templates" + path);
                 response200Header(dos, contentType, body.length);
