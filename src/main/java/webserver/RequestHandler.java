@@ -1,10 +1,9 @@
 package webserver;
 
+import controller.FrontController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.FileIoUtils;
-import utils.MyHeaders;
-import utils.MyParams;
+import utils.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -14,15 +13,19 @@ import java.util.Objects;
 
 import static db.DataBase.addUser;
 import static utils.IOUtils.readData;
+import static utils.ResponseBodies.*;
+import static utils.ResponseHeaders.*;
 import static utils.UserFactory.createUser;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
 
     private Socket connection;
+    private FrontController frontController;
 
-    public RequestHandler(Socket connectionSocket) {
-        this.connection = connectionSocket;
+    public RequestHandler(Socket connection, FrontController frontController){
+        this.frontController = frontController;
+        this.connection = connection;
     }
 
     public void run() {
@@ -95,28 +98,20 @@ public class RequestHandler implements Runnable {
             }
             String path = headers.get("path");
 
-            if(path.equals("/")) {
-                body = "Hello world".getBytes();
-                response200Header(dos, body.length);
-                responseBody(dos, body);
-                return;
-            }
+
             logger.info("===========================================================================================");
 
             String[] tokens = path.split("\\.");
             String extension = tokens[tokens.length - 1];
             String contentType = headers.get("contentType");
-            if(extension.equals("html") || extension.equals("ico")){
-                body = FileIoUtils.loadFileFromClasspath("templates" + path);
-                response200Header(dos, contentType, body.length);
-                responseBody(dos, body);
+            params.put("extension", extension);
+            if(frontController.canHandle(headers, params)){
+                frontController.handlerMapping(headers, params, dos);
                 return;
             }
             body = FileIoUtils.loadFileFromClasspath("static" + path);
             response200Header(dos, contentType, body.length);
             responseBody(dos, body);
-
-
         } catch (IOException e) {
             logger.error(e.getMessage());
         } catch (URISyntaxException e) {
@@ -124,44 +119,5 @@ public class RequestHandler implements Runnable {
         }
     }
 
-    private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 OK \r\n");
-            dos.writeBytes("Content-Type: text/html;charset=utf-8 \r\n");
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + " \r\n");
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-    }
 
-    private void response302Header(DataOutputStream dos, String redirectUrl) {
-        try {
-            dos.writeBytes("HTTP/1.1 302 Found \r\n");
-            dos.writeBytes(String.format("Location: %s", redirectUrl));
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-    }
-
-    private void response200Header(DataOutputStream dos,String contentType, int lengthOfBodyContent) {
-        try {
-            dos.writeBytes("HTTP/1.1 200 \r\n");
-            dos.writeBytes(String.format("Content-Type: %s;charset=utf-8 \r\n", contentType));
-            dos.writeBytes("Content-Length: " + lengthOfBodyContent + " \r\n");
-            dos.writeBytes("\r\n");
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-    }
-
-    private void responseBody(DataOutputStream dos, byte[] body) {
-        try {
-            dos.write(body, 0, body.length);
-            dos.flush();
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }
-    }
 }
