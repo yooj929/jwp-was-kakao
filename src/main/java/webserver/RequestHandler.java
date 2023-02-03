@@ -61,10 +61,20 @@ public class RequestHandler implements Runnable {
                 return;
             }
             logger.info("===========================================================================================");
-
-            body = FileIoUtils.loadFileFromClasspath("templates" + path);
+            logger.info(path);
+            String[] tokens = path.split("\\.");
+            String extension = tokens[tokens.length - 1];
+            if(extension.equals("html") || extension.equals("ico")){
+                body = FileIoUtils.loadFileFromClasspath("templates" + path);
+                response200Header(dos, contentType, body.length);
+                responseBody(dos, body);
+                return;
+            }
+            body = FileIoUtils.loadFileFromClasspath("static" + path);
             response200Header(dos, contentType, body.length);
             responseBody(dos, body);
+
+
         } catch (IOException e) {
             logger.error(e.getMessage());
         } catch (URISyntaxException e) {
