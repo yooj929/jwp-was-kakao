@@ -1,8 +1,8 @@
 package controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import utils.MyHeaders;
 
-@RestController
-public class UserController {
+public class UserController{ // implements MyController {
+
 
 }

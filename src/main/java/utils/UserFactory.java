@@ -10,7 +10,7 @@ public class UserFactory {
 
     }
 
-    public static User createUser(Map<String, String> userData){
+    public static User createUser(MyParams userData){
         return new User(userData.get("userId"),
                 userData.get("password"),
                 userData.get("name"),
