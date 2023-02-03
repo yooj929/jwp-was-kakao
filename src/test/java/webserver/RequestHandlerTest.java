@@ -37,6 +37,7 @@ class RequestHandlerTest {
                 "GET /index.html HTTP/1.1 ",
                 "Host: localhost:8080 ",
                 "Connection: keep-alive ",
+                "Accept: text/html ",
                 "",
                 "");
 
@@ -54,6 +55,18 @@ class RequestHandlerTest {
                 "Content-Length: 6902 \r\n" +
                 "\r\n" +
                 new String(FileIoUtils.loadFileFromClasspath("templates/index.html"));
+
+        var output = socket.output().split("\n");
+        var expectedOutput = expected.split("\n");
+
+        for(int i=0; i<output.length; i++){
+            if(output[i].equals(expectedOutput[i])){
+                continue;
+            }
+            System.out.println("actual: "+output[i]);
+            System.out.println("expected: "+ expectedOutput[i]);
+        }
+
 
         assertThat(socket.output()).isEqualTo(expected);
     }
