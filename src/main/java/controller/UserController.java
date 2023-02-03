@@ -1,20 +1,21 @@
 package controller;
 
+import model.Extension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.*;
+import utils.FileIoUtils;
+import utils.MyHeaders;
+import utils.MyParams;
+import utils.UserFactory;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 
 import static db.DataBase.addUser;
-import static utils.IOUtils.readData;
-import static utils.ResponseBodies.*;
+import static utils.ResponseBodies.responseBody;
 import static utils.ResponseHeaders.response200Header;
 import static utils.ResponseHeaders.response302Header;
-import static utils.UserFactory.createUser;
 
 public class UserController  implements MyController {
 
@@ -22,13 +23,13 @@ public class UserController  implements MyController {
 
 
     @Override
-    public boolean canHandle(MyHeaders headers, MyParams params) {
+    public boolean canHandle(MyHeaders headers, MyParams params, Extension extension) {
         String path = headers.get("path");
         return path.startsWith("/user");
     }
 
     @Override
-    public void handle(MyHeaders headers, MyParams params, DataOutputStream dataOutputStream) {
+    public void handle(MyHeaders headers, MyParams params, Extension extension, DataOutputStream dataOutputStream) {
         String path = headers.get("path");
 
         if(path.equals("/user/form.html") && headers.get("method").equals("POST")){

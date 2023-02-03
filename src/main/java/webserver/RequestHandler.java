@@ -1,6 +1,7 @@
 package webserver;
 
 import controller.FrontController;
+import model.Extension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.MyHeaders;
@@ -101,16 +102,13 @@ public class RequestHandler implements Runnable {
             logger.info("===========================================================================================");
 
             String[] tokens = path.split("\\.");
-            String extension = tokens[tokens.length - 1];
+            Extension extension = new Extension(tokens[tokens.length - 1]);
             String contentType = headers.get("contentType");
-            params.put("extension", extension);
-            if(frontController.canHandle(headers, params)){
-                frontController.handlerMapping(headers, params, dos);
+            if(frontController.canHandle(headers, params, extension)){
+                frontController.handlerMapping(headers, params, extension, dos);
             }
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
     }
-
-
 }

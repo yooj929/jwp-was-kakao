@@ -1,5 +1,6 @@
 package controller;
 
+import model.Extension;
 import utils.MyHeaders;
 import utils.MyParams;
 
@@ -21,16 +22,16 @@ public class FrontController {
         controllers.addAll(List.of(myControllers));
     }
 
-    public void handlerMapping(MyHeaders headers, MyParams params, DataOutputStream dataOutputStream){
+    public void handlerMapping(MyHeaders headers, MyParams params, Extension extension, DataOutputStream dataOutputStream){
         controllers.stream()
-                .filter((con) -> con.canHandle(headers, params))
+                .filter((con) -> con.canHandle(headers, params, extension))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("지원하지 않는 메소드 입니다."))
-                .handle(headers, params, dataOutputStream);
+                .handle(headers, params, extension, dataOutputStream);
     }
 
-    public boolean canHandle(MyHeaders headers, MyParams params){
+    public boolean canHandle(MyHeaders headers, MyParams params, Extension extension){
         return controllers.stream()
-                .anyMatch(con -> con.canHandle(headers, params));
+                .anyMatch(con -> con.canHandle(headers, params, extension));
     }
 }

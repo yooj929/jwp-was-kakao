@@ -1,13 +1,16 @@
 package model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
 @Getter
 public class Extension {
 
     private final String extension;
+
+    public Extension(String extension) {
+        this.extension = extension;
+    }
 
     public boolean isStatic(){
         if(extension.equals("html") || extension.equals("ico")){
