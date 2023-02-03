@@ -7,6 +7,9 @@ import utils.FileIoUtils;
 import java.io.*;
 import java.net.Socket;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class RequestHandler implements Runnable {
@@ -29,13 +32,24 @@ public class RequestHandler implements Runnable {
 
             boolean isFirstLine = false;
             String path = "" , method = "", contentType= "";
+            Map<String, String> params = new HashMap<>();
             while(!(Objects.isNull(line) || line.equals(""))){
                 logger.info(line);
 
                 if(!isFirstLine){
+
                     String[] tokens = line.split(" ");
                     method = tokens[0];
                     path = tokens[1];
+                    if(path.contains("?")){
+                        logger.info("PATH : {}", path);
+                        Arrays.stream(path.split("\\?")[1].split("&")).forEach(str -> {
+                            var keyAndValue = str.split("=");
+                            params.put(keyAndValue[0], keyAndValue[1]);
+                        });
+                        path = path.split("\\?")[0];
+                    }
+                    logger.info("CURRENT : {} ", path);
                     //logger.info("METHOD : {} , PATH : {}", method, path);
                     isFirstLine = true;
                 }
@@ -50,6 +64,9 @@ public class RequestHandler implements Runnable {
                 }
                 line = br.readLine();
             }
+            params.forEach((key, value) -> logger.info("KEY : {}, VALUE = {}", key, value));
+
+
 
 
             DataOutputStream dos = new DataOutputStream(out);
