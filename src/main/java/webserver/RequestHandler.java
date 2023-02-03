@@ -24,8 +24,20 @@ public class RequestHandler implements Runnable {
             // TODO 사용자 요청에 대한 처리는 이 곳에 구현하면 된다.
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String line = br.readLine();
+
+            boolean isFirstLine = false;
+            String path = "" , method = "";
             while(!(Objects.isNull(line) || line.equals(""))){
-                logger.info(line);
+                // logger.info(line);
+
+                if(isFirstLine == false){
+                    String[] tokens = line.split(" ");
+                    method = tokens[0];
+                    path = tokens[1];
+                    logger.info("METHOD : {} , PATH : {}", method, path);
+                    isFirstLine = true;
+                }
+
                 line = br.readLine();
             }
 
