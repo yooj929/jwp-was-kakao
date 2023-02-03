@@ -1,8 +1,10 @@
 package webserver;
 
+import db.DataBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.FileIoUtils;
+import utils.UserFactory;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,6 +13,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import static db.DataBase.*;
+import static utils.IOUtils.readData;
+import static utils.UserFactory.*;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
@@ -31,7 +37,7 @@ public class RequestHandler implements Runnable {
             String line = br.readLine();
 
             boolean isFirstLine = false;
-            String path = "" , method = "", contentType= "";
+            String path = "" , method = "", contentType= "", contentLength = "";
             Map<String, String> params = new HashMap<>();
             while(!(Objects.isNull(line) || line.equals(""))){
                 logger.info(line);
@@ -42,15 +48,13 @@ public class RequestHandler implements Runnable {
                     method = tokens[0];
                     path = tokens[1];
                     if(path.contains("?")){
-                        logger.info("PATH : {}", path);
                         Arrays.stream(path.split("\\?")[1].split("&")).forEach(str -> {
                             var keyAndValue = str.split("=");
                             params.put(keyAndValue[0], keyAndValue[1]);
                         });
                         path = path.split("\\?")[0];
                     }
-                    logger.info("CURRENT : {} ", path);
-                    //logger.info("METHOD : {} , PATH : {}", method, path);
+
                     isFirstLine = true;
                 }
                 if(line.startsWith("Accept: ")){
@@ -62,12 +66,31 @@ public class RequestHandler implements Runnable {
                         contentType = tokens.split(",")[0];
                     }
                 }
+
+                if(line.startsWith("Content-Length: ")){
+                    contentLength = line.split(" ")[1];
+                    logger.info("CONTENT_LENGTH : {}", contentLength);
+                }
+
                 line = br.readLine();
             }
-            params.forEach((key, value) -> logger.info("KEY : {}, VALUE = {}", key, value));
 
+            if(method.equals("POST")){
+                String result = readData(br, Integer.valueOf(contentLength));
 
+                Arrays.stream(result.split("&")).forEach(str -> {
+                    var keyAndValue = str.split("=");
+                    params.put(keyAndValue[0], keyAndValue[1]);
+                });
 
+                params.forEach((key, value) -> logger.info("KEY : {}, VALUE = {}", key, value));
+
+                // Memory DB에 유저 데이터 저장
+                addUser(createUser(params));
+
+                logger.info("USER : {}", findUserById(params.get("userId")));
+                return;
+            }
 
             DataOutputStream dos = new DataOutputStream(out);
             byte[] body = null;
