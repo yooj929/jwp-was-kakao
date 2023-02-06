@@ -1,5 +1,6 @@
 package webserver;
 
+import controller.MyController;
 import dispatcherservlet.FrontController;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -8,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.request.MyRequest;
@@ -37,9 +39,8 @@ public class RequestHandler implements Runnable {
     }
 
     private void toFrontController(MyRequest myRequest, DataOutputStream dos) {
-        if (frontController.canHandle(myRequest)) {
-            frontController.handlerMapping(myRequest, dos);
-        }
-    }
+            MyController myController = Objects.requireNonNull(frontController.findHandler(myRequest));
+            myController.handle(myRequest, dos);
 
+    }
 }
