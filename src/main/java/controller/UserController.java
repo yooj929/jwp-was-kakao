@@ -11,6 +11,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import utils.request.MyRequest;
+import utils.response.ResponseUtils;
 
 import static db.DataBase.addUser;
 import static utils.response.ResponseBodyUtils.responseBody;
@@ -32,13 +33,14 @@ public class UserController  implements MyController {
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
         String path = myRequest.getHeaders().get("path");
         String method = myRequest.getHeader("method");
+        String contentType = myRequest.getHeader("contentType");
 
         if(path.equals("/user/form.html") && method.equals("POST")){
             createUser(myRequest.getParams(), dataOutputStream);
         }
 
         if(path.equals("/user/form.html") && method.equals("GET")){
-            form(myRequest.getHeaders(), dataOutputStream);
+            form(path, contentType, dataOutputStream);
         }
     }
 
@@ -48,15 +50,7 @@ public class UserController  implements MyController {
         response302Header(dataOutputStream, "/index.html");
     }
 
-    private void form(MyHeaders headers, DataOutputStream dataOutputStream){
-        try {
-            byte[] body = FileIoUtils.loadFileFromClasspath("templates" + headers.get("path"));
-            response200Header(dataOutputStream, headers.get("contentType"), body.length);
-            responseBody(dataOutputStream, body);
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+    private void form(String path, String contentType, DataOutputStream dataOutputStream){
+        ResponseUtils.make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 }

@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import utils.request.MyRequest;
+import utils.response.ResponseUtils;
 
 import static utils.response.ResponseBodyUtils.responseBody;
 import static utils.response.ResponseHeaderUtils.response200Header;
@@ -30,14 +31,6 @@ public class StaticController implements MyController{
     }
 
     private void handleStatic(String path, String contentType, DataOutputStream dataOutputStream){
-        try {
-            byte[] body = FileIoUtils.loadFileFromClasspath("static" + path);
-            response200Header(dataOutputStream, contentType, body.length);
-            responseBody(dataOutputStream, body);
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        ResponseUtils.make200StaticResponse(path, contentType, dataOutputStream, logger);
     }
 }

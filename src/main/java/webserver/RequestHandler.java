@@ -74,7 +74,6 @@ public class RequestHandler implements Runnable {
                 line = br.readLine();
             }
             DataOutputStream dos = new DataOutputStream(out);
-            byte[] body = null;
             if(myRequest.getHeader("method").equals("POST")){
                 String result = readData(br, Integer.parseInt(myRequest.getHeader("contentLength")));
                 Arrays.stream(result.split("&")).forEach(str -> {

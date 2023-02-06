@@ -1,5 +1,6 @@
 package webserver;
 
+import controller.IcoController;
 import dispatcherservlet.FrontController;
 import controller.HomeController;
 import controller.StaticController;
@@ -30,7 +31,7 @@ public class WebServer {
             Socket connection;
             while ((connection = listenSocket.accept()) != null) {
                 FrontController frontController = new FrontController();
-                frontController.addAll(new HomeController(), new UserController(), new StaticController());
+                frontController.addAll(new HomeController(), new UserController(), new StaticController(), new IcoController());
                 Thread thread = new Thread(new RequestHandler(connection, frontController));
                 thread.start();
             }
