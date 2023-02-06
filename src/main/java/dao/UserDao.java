@@ -1,6 +1,6 @@
 package dao;
 
-import model.User;
+import entity.User;
 
 public interface UserDao {
     User save(User user);

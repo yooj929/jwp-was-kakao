@@ -1,7 +1,7 @@
 package service;
 
 import dto.UserCreateDto;
-import model.User;
+import entity.User;
 
 public interface UserService {
 

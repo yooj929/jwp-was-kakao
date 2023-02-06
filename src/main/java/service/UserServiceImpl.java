@@ -2,7 +2,7 @@ package service;
 
 import dao.UserDao;
 import dto.UserCreateDto;
-import model.User;
+import entity.User;
 
 public class UserServiceImpl implements UserService {
 

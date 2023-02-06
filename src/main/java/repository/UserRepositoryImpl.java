@@ -1,7 +1,7 @@
 package repository;
 
 import db.DataBase;
-import model.User;
+import entity.User;
 
 public class UserRepositoryImpl implements UserRepository {
     @Override

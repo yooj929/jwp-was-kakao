@@ -3,7 +3,7 @@ package db;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import model.User;
+import entity.User;
 
 public class UserDataBase {
 

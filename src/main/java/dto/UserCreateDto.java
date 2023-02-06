@@ -1,6 +1,6 @@
 package dto;
 
-import model.User;
+import entity.User;
 
 public class UserCreateDto {
 
