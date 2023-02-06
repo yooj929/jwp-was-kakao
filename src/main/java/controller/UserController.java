@@ -24,13 +24,13 @@ public class UserController implements MyController {
 
     @Override
     public boolean canHandle(MyRequest myRequest) {
-        String path = myRequest.getHeaders().get("path");
+        String path = myRequest.getHeader("path");
         return path.startsWith("/user");
     }
 
     @Override
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        String path = myRequest.getHeaders().get("path");
+        String path = myRequest.getHeader("path");
         String method = myRequest.getHeader("method");
         String contentType = myRequest.getHeader("contentType");
         map(myRequest, dataOutputStream, path, method, contentType);
@@ -39,7 +39,12 @@ public class UserController implements MyController {
     private void map(MyRequest myRequest, DataOutputStream dataOutputStream, String path, String method,
                      String contentType) {
         if (isUserCreate(path, method)) {
-            createUser(myRequest.getParams(), dataOutputStream);
+            createUser(UserCreateDto.builder()
+                    .userId(myRequest.getParam("userId"))
+                    .name(myRequest.getParam("name"))
+                    .email(myRequest.getParam("email"))
+                    .password(myRequest.getParam("password"))
+                    .build(), dataOutputStream);
         }
 
         if (isUserForm(path, method)) {
@@ -47,13 +52,8 @@ public class UserController implements MyController {
         }
     }
 
-    private void createUser(MyParams params, DataOutputStream dataOutputStream) {
-        userService.create(UserCreateDto.builder()
-                .userId(params.get("userId"))
-                .name(params.get("name"))
-                .email(params.get("email"))
-                .password(params.get("password"))
-                .build());
+    private void createUser(UserCreateDto userCreateDto, DataOutputStream dataOutputStream) {
+        userService.create(userCreateDto);
         make302Response(dataOutputStream, "/index.html", logger);
     }
 

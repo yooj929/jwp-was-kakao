@@ -6,7 +6,6 @@ import utils.MyParams;
 public class MyRequest {
     private final MyParams params;
     private final MyHeaders headers;
-
     private Extension extension;
 
     public MyRequest() {
@@ -38,11 +37,4 @@ public class MyRequest {
         return extension.isStatic();
     }
 
-    public MyParams getParams() {
-        return params;
-    }
-
-    public MyHeaders getHeaders() {
-        return headers;
-    }
 }
