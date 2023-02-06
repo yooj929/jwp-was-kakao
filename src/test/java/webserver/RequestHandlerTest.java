@@ -1,27 +1,20 @@
 package webserver;
 
-import dispatcherservlet.FrontController;
-import controller.HomeController;
-import controller.StaticController;
-import controller.UserController;
-import org.junit.jupiter.api.Test;
-import support.StubSocket;
-import utils.FileIoUtils;
+import static config.AppConfig.getFrontController;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import support.StubSocket;
+import utils.FileIoUtils;
 
 class RequestHandlerTest {
     @Test
     void socket_out() {
         // given
         final var socket = new StubSocket();
-        final var frontController = new FrontController();
-        frontController.addAll(new HomeController(), new StaticController(), new UserController());
-
-        final var handler = new RequestHandler(socket, frontController);
+        final var handler = new RequestHandler(socket, getFrontController());
 
         // when
         handler.run();
@@ -49,10 +42,7 @@ class RequestHandlerTest {
                 "");
 
         final var socket = new StubSocket(httpRequest);
-        final var frontController = new FrontController();
-        frontController.addAll(new HomeController(), new StaticController(), new UserController());
-
-        final var handler = new RequestHandler(socket, frontController);
+        final var handler = new RequestHandler(socket, getFrontController());
 
         // when
         handler.run();
@@ -60,7 +50,7 @@ class RequestHandlerTest {
         // then
 
 
-        var expected = "HTTP/1.1 200 \r\n" +
+        var expected = "HTTP/1.1 200 OK \r\n" +
                 "Content-Type: text/html;charset=utf-8 \r\n" +
                 "Content-Length: 6902 \r\n" +
                 "\r\n" +
