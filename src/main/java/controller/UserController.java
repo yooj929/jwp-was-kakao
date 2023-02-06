@@ -22,7 +22,6 @@ public class UserController implements MyController {
 
     }
 
-
     @Override
     public boolean canHandle(MyRequest myRequest) {
         String path = myRequest.getHeaders().get("path");
@@ -35,6 +34,17 @@ public class UserController implements MyController {
         String method = myRequest.getHeader("method");
         String contentType = myRequest.getHeader("contentType");
         map(myRequest, dataOutputStream, path, method, contentType);
+    }
+
+    private void map(MyRequest myRequest, DataOutputStream dataOutputStream, String path, String method,
+                     String contentType) {
+        if (isUserCreate(path, method)) {
+            createUser(myRequest.getParams(), dataOutputStream);
+        }
+
+        if (isUserForm(path, method)) {
+            form(path, contentType, dataOutputStream);
+        }
     }
 
     private void createUser(MyParams params, DataOutputStream dataOutputStream) {
@@ -51,14 +61,11 @@ public class UserController implements MyController {
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 
-    private void map(MyRequest myRequest, DataOutputStream dataOutputStream, String path, String method,
-                     String contentType) {
-        if (path.equals("/user/create") && method.equals("POST")) {
-            createUser(myRequest.getParams(), dataOutputStream);
-        }
+    private boolean isUserForm(String path, String method) {
+        return path.equals("/user/form.html") && method.equals("GET");
+    }
 
-        if (path.equals("/user/form.html") && method.equals("GET")) {
-            form(path, contentType, dataOutputStream);
-        }
+    private boolean isUserCreate(String path, String method) {
+        return path.equals("/user/create") && method.equals("POST");
     }
 }

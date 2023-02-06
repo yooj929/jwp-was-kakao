@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
 
-@Getter
 public class MyHeaders {
 
     private final Map<String, String> headers;

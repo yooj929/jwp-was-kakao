@@ -38,13 +38,21 @@ public class HomeController implements MyController {
     }
 
     private void map(DataOutputStream dataOutputStream, String path, String contentType, String method) {
-        if (path.equals("/") && method.equals("GET")) {
+        if (isHelloWorld(path, method)) {
             helloWorld(dataOutputStream);
             return;
         }
-        if (path.equals("/index.html") && method.equals("GET")) {
+        if (isIndex(path, method)) {
             index(path, contentType, dataOutputStream);
         }
+    }
+
+    private boolean isIndex(String path, String method) {
+        return path.equals("/index.html") && method.equals("GET");
+    }
+
+    private boolean isHelloWorld(String path, String method) {
+        return path.equals("/") && method.equals("GET");
     }
 
 }
