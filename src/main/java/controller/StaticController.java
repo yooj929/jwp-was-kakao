@@ -1,17 +1,10 @@
 package controller;
 
+import java.io.DataOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.FileIoUtils;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import utils.request.MyRequest;
 import utils.response.ResponseUtils;
-
-import static utils.response.ResponseBodyUtils.responseBody;
-import static utils.response.ResponseHeaderUtils.response200Header;
 
 public class StaticController implements MyController{
 
@@ -26,7 +19,6 @@ public class StaticController implements MyController{
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
         String path = myRequest.getHeader("path");
         String contentType = myRequest.getHeader("contentType");
-
         handleStatic(path, contentType, dataOutputStream);
     }
 

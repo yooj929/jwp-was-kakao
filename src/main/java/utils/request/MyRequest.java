@@ -1,7 +1,6 @@
 package utils.request;
 
-import lombok.Getter;
-import model.Extension;
+import utils.Extension;
 import utils.MyHeaders;
 import utils.MyParams;
 public class MyRequest {

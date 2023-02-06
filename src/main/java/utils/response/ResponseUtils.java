@@ -21,6 +21,17 @@ public class ResponseUtils {
         make200Response(path, contentType, dataOutputStream, logger, "static");
     }
 
+    public static void make302Response(DataOutputStream dos, String redirectUrl, Logger logger){
+        try {
+            dos.writeBytes("HTTP/1.1 302 Found \r\n");
+            dos.writeBytes(String.format("Location: %s", redirectUrl));
+            dos.writeBytes("\r\n");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }
+
+    }
+
     public static void make200Response(String path, String contentType, DataOutputStream dataOutputStream,
                                        Logger logger, String classPath) {
         try {

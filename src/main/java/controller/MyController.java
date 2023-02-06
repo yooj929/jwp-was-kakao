@@ -1,9 +1,5 @@
 package controller;
 
-import model.Extension;
-import utils.MyHeaders;
-import utils.MyParams;
-
 import java.io.DataOutputStream;
 import utils.request.MyRequest;
 

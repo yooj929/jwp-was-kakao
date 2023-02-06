@@ -1,26 +1,26 @@
 package controller;
 
+import static utils.response.ResponseUtils.make200TemplatesResponse;
+import static utils.response.ResponseUtils.make302Response;
+
+import dto.UserCreateDto;
+import java.io.DataOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.FileIoUtils;
-import utils.MyHeaders;
+import service.UserService;
 import utils.MyParams;
-import utils.UserFactory;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import utils.request.MyRequest;
-import utils.response.ResponseUtils;
 
-import static db.DataBase.addUser;
-import static utils.response.ResponseBodyUtils.responseBody;
-import static utils.response.ResponseHeaderUtils.response200Header;
-import static utils.response.ResponseHeaderUtils.response302Header;
-
-public class UserController  implements MyController {
+public class UserController implements MyController {
 
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+
+    }
 
 
     @Override
@@ -34,23 +34,31 @@ public class UserController  implements MyController {
         String path = myRequest.getHeaders().get("path");
         String method = myRequest.getHeader("method");
         String contentType = myRequest.getHeader("contentType");
+        map(myRequest, dataOutputStream, path, method, contentType);
+    }
 
-        if(path.equals("/user/form.html") && method.equals("POST")){
+    private void createUser(MyParams params, DataOutputStream dataOutputStream) {
+        userService.create(UserCreateDto.builder()
+                .userId(params.get("userId"))
+                .name(params.get("name"))
+                .email(params.get("email"))
+                .password(params.get("password"))
+                .build());
+        make302Response(dataOutputStream, "/index.html", logger);
+    }
+
+    private void form(String path, String contentType, DataOutputStream dataOutputStream) {
+        make200TemplatesResponse(path, contentType, dataOutputStream, logger);
+    }
+
+    private void map(MyRequest myRequest, DataOutputStream dataOutputStream, String path, String method,
+                     String contentType) {
+        if (path.equals("/user/create") && method.equals("POST")) {
             createUser(myRequest.getParams(), dataOutputStream);
         }
 
-        if(path.equals("/user/form.html") && method.equals("GET")){
+        if (path.equals("/user/form.html") && method.equals("GET")) {
             form(path, contentType, dataOutputStream);
         }
-    }
-
-    private void createUser(MyParams params, DataOutputStream dataOutputStream){
-        // Memory DB에 유저 데이터 저장
-        addUser(UserFactory.createUser(params));
-        response302Header(dataOutputStream, "/index.html");
-    }
-
-    private void form(String path, String contentType, DataOutputStream dataOutputStream){
-        ResponseUtils.make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 }

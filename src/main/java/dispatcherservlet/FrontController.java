@@ -3,25 +3,16 @@ package dispatcherservlet;
 import controller.MyController;
 import java.io.DataOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import model.Extension;
-import utils.MyHeaders;
-import utils.MyParams;
 import utils.request.MyRequest;
 
 public class FrontController {
     List<MyController> controllers;
 
-    public FrontController() {
-        controllers = new ArrayList<>();
-    }
+    public FrontController(Collection<MyController> collection){
+        controllers = new ArrayList<>(collection);
 
-    public void addController(MyController myController) {
-        controllers.add(myController);
-    }
-
-    public void addAll(MyController... myControllers) {
-        controllers.addAll(List.of(myControllers));
     }
 
     public void handlerMapping(MyRequest myRequest, DataOutputStream dataOutputStream) {

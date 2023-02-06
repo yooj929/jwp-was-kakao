@@ -23,19 +23,11 @@ public class HomeController implements MyController {
         String path = myRequest.getHeader("path");
         String contentType = myRequest.getHeader("contentType");
         String method = myRequest.getHeader("method");
-        if (path.equals("/") && method.equals("GET")) {
-            helloWorld(dataOutputStream);
-            return;
-        }
-
-        if (path.equals("/index.html") && method.equals("GET")) {
-            index(path, contentType, dataOutputStream);
-        }
+        map(dataOutputStream, path, contentType, method);
     }
 
 
     private void helloWorld(DataOutputStream dataOutputStream) {
-        ;
         byte[] body = "Hello world".getBytes();
         response200Header(dataOutputStream, body.length);
         responseBody(dataOutputStream, body);
@@ -45,5 +37,14 @@ public class HomeController implements MyController {
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 
+    private void map(DataOutputStream dataOutputStream, String path, String contentType, String method) {
+        if (path.equals("/") && method.equals("GET")) {
+            helloWorld(dataOutputStream);
+            return;
+        }
+        if (path.equals("/index.html") && method.equals("GET")) {
+            index(path, contentType, dataOutputStream);
+        }
+    }
 
 }

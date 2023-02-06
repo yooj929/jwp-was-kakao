@@ -1,12 +1,15 @@
-package model;
+package dto;
 
-public class User {
+import model.User;
+
+public class UserCreateDto {
+
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
 
-    private User(String userId, String password, String name, String email) {
+    protected UserCreateDto(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
@@ -29,40 +32,46 @@ public class User {
         return email;
     }
 
-    @Override
-    public String toString() {
-        return "User [userId=" + userId + ", password=" + password + ", name=" + name + ", email=" + email + "]";
-    }
-    public static UserBuilder builder(){
-        return new UserBuilder();
+    public User toEntity(){
+        return User.builder()
+                .userId(userId)
+                .email(email)
+                .name(name)
+                .password(password)
+                .build();
     }
 
-    public static class UserBuilder{
+    public static UserCreateDtoBuilder builder(){
+        return new UserCreateDtoBuilder();
+    }
 
+    public static class UserCreateDtoBuilder{
         private String userId;
         private String password;
         private String name;
         private String email;
 
-        public UserBuilder userId(String userId){
+        public UserCreateDtoBuilder userId(String userId){
             this.userId=userId;
             return this;
         }
-        public UserBuilder password(String password){
+        public UserCreateDtoBuilder password(String password){
             this.password=password;
             return this;
         }
-        public UserBuilder name(String name){
+        public UserCreateDtoBuilder name(String name){
             this.name=name;
             return this;
         }
-        public UserBuilder email(String email){
+        public UserCreateDtoBuilder email(String email){
             this.email=email;
             return this;
         }
 
-        public User build(){
-            return new User(userId, password, name, email);
+        public UserCreateDto build(){
+            return new UserCreateDto(userId, password, name, email);
         }
     }
+
+
 }
