@@ -1,6 +1,7 @@
 package dispatcherservlet;
 
 import controller.MyController;
+import excpetion.NotMatchException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -17,6 +18,7 @@ public class FrontController {
     public MyController findHandler(MyRequest myRequest) {
         return controllers.stream()
                 .filter(con -> con.canHandle(myRequest))
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("지원하지 않는 url 입니다."));
+                .findFirst().orElseThrow(() -> new NotMatchException("Cannot find handler", "Can find Handler",
+                        FrontController.class.getSimpleName()));
     }
 }
