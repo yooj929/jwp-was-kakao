@@ -1,7 +1,7 @@
 package db;
 
-import java.util.Collection;
 import entity.User;
+import java.util.Collection;
 
 public class DataBase {
 

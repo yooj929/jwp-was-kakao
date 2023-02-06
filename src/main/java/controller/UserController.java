@@ -7,8 +7,9 @@ import dto.UserCreateDto;
 import java.io.DataOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import service.UserService;
-import utils.MyParams;
 import utils.request.MyRequest;
 
 public class UserController implements MyController {
@@ -24,27 +25,22 @@ public class UserController implements MyController {
 
     @Override
     public boolean canHandle(MyRequest myRequest) {
-        String path = myRequest.getHeader("path");
+        String path = myRequest.getPath();
         return path.startsWith("/user");
     }
 
     @Override
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        String path = myRequest.getHeader("path");
-        String method = myRequest.getHeader("method");
-        String contentType = myRequest.getHeader("contentType");
+        String path = myRequest.getPath();
+        HttpMethod method = myRequest.getMethod();
+        String contentType = myRequest.getHeader(HttpHeaders.CONTENT_TYPE);
         map(myRequest, dataOutputStream, path, method, contentType);
     }
 
-    private void map(MyRequest myRequest, DataOutputStream dataOutputStream, String path, String method,
+    private void map(MyRequest myRequest, DataOutputStream dataOutputStream, String path, HttpMethod method,
                      String contentType) {
         if (isUserCreate(path, method)) {
-            createUser(UserCreateDto.builder()
-                    .userId(myRequest.getParam("userId"))
-                    .name(myRequest.getParam("name"))
-                    .email(myRequest.getParam("email"))
-                    .password(myRequest.getParam("password"))
-                    .build(), dataOutputStream);
+            createUser(createUserCreateDto(myRequest), dataOutputStream);
         }
 
         if (isUserForm(path, method)) {
@@ -61,11 +57,20 @@ public class UserController implements MyController {
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 
-    private boolean isUserForm(String path, String method) {
-        return path.equals("/user/form.html") && method.equals("GET");
+    private boolean isUserForm(String path, HttpMethod method) {
+        return path.equals("/user/form.html") && method.equals(HttpMethod.GET);
     }
 
-    private boolean isUserCreate(String path, String method) {
-        return path.equals("/user/create") && method.equals("POST");
+    private boolean isUserCreate(String path, HttpMethod method) {
+        return path.equals("/user/create") && method.equals(HttpMethod.POST);
+    }
+
+    private UserCreateDto createUserCreateDto(MyRequest myRequest) {
+        return UserCreateDto.builder()
+                .userId(myRequest.getParam("userId"))
+                .name(myRequest.getParam("name"))
+                .email(myRequest.getParam("email"))
+                .password(myRequest.getParam("password"))
+                .build();
     }
 }

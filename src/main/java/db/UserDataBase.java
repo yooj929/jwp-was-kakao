@@ -1,9 +1,9 @@
 package db;
 
+import entity.User;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import entity.User;
 
 public class UserDataBase {
 

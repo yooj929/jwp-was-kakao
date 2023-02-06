@@ -7,6 +7,8 @@ import static utils.response.ResponseUtils.make200TemplatesResponse;
 import java.io.DataOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import utils.request.MyRequest;
 
 public class HomeController implements MyController {
@@ -14,18 +16,17 @@ public class HomeController implements MyController {
 
     @Override
     public boolean canHandle(MyRequest myRequest) {
-        String path = myRequest.getHeader("path");
+        String path = myRequest.getPath();
         return path.equals("/") || path.equals("/index.html");
     }
 
     @Override
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        String path = myRequest.getHeader("path");
-        String contentType = myRequest.getHeader("contentType");
-        String method = myRequest.getHeader("method");
+        String path = myRequest.getPath();
+        String contentType = myRequest.getHeader(HttpHeaders.ACCEPT);
+        HttpMethod method = myRequest.getMethod();
         map(dataOutputStream, path, contentType, method);
     }
-
 
     private void helloWorld(DataOutputStream dataOutputStream) {
         byte[] body = "Hello world".getBytes();
@@ -37,7 +38,7 @@ public class HomeController implements MyController {
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 
-    private void map(DataOutputStream dataOutputStream, String path, String contentType, String method) {
+    private void map(DataOutputStream dataOutputStream, String path, String contentType, HttpMethod method) {
         if (isHelloWorld(path, method)) {
             helloWorld(dataOutputStream);
             return;
@@ -47,12 +48,12 @@ public class HomeController implements MyController {
         }
     }
 
-    private boolean isIndex(String path, String method) {
-        return path.equals("/index.html") && method.equals("GET");
+    private boolean isIndex(String path, HttpMethod method) {
+        return path.equals("/index.html") && method.equals(HttpMethod.GET);
     }
 
-    private boolean isHelloWorld(String path, String method) {
-        return path.equals("/") && method.equals("GET");
+    private boolean isHelloWorld(String path, HttpMethod method) {
+        return path.equals("/") && method.equals(HttpMethod.GET);
     }
 
 }

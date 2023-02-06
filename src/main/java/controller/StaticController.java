@@ -3,6 +3,7 @@ package controller;
 import java.io.DataOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import utils.request.MyRequest;
 import utils.response.ResponseUtils;
 
@@ -17,8 +18,8 @@ public class StaticController implements MyController{
 
     @Override
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        String path = myRequest.getHeader("path");
-        String contentType = myRequest.getHeader("contentType");
+        String path = myRequest.getPath();
+        String contentType = myRequest.getHeader(HttpHeaders.ACCEPT);
         handleStatic(path, contentType, dataOutputStream);
     }
 
