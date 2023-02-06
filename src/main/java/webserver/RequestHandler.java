@@ -39,8 +39,6 @@ public class RequestHandler implements Runnable {
     }
 
     private void toFrontController(MyRequest myRequest, DataOutputStream dos) {
-            MyController myController = Objects.requireNonNull(frontController.findHandler(myRequest));
-            myController.handle(myRequest, dos);
-
+        frontController.findHandler(myRequest).handle(myRequest, dos);
     }
 }
