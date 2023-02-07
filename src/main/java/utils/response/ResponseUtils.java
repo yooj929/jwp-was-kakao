@@ -7,11 +7,16 @@ import static utils.response.ResponseUtilsConstants.LOCATION;
 import static utils.response.ResponseUtilsConstants.SET_COOKIE_JSESSIONID;
 
 import auth.controller.MyCookie;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.Template;
+import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.http.HttpHeaders;
+import user.dto.UserResponseDto;
 import utils.FileIoUtils;
 
 public class ResponseUtils {
@@ -76,6 +81,12 @@ public class ResponseUtils {
         }
     }
 
+    public static void make200Response(byte[] body, String contentType, DataOutputStream dataOutputStream,
+                                       Logger logger) {
+        response200Header(dataOutputStream, contentType, body.length, logger);
+        responseBody(dataOutputStream, body);
+    }
+
     public static void response200Header(DataOutputStream dos, int lengthOfBodyContent, Logger logger) {
         try {
             dos.writeBytes("HTTP/1.1 200 OK \r\n");
@@ -98,4 +109,21 @@ public class ResponseUtils {
             logger.error(e.getMessage());
         }
     }
+
+    public static void make200ResponseWithUsersByHandleBars(String contentType, DataOutputStream dataOutputStream,
+                                                            List<UserResponseDto> users, Logger logger) {
+        try {
+            ClassPathTemplateLoader loader = new ClassPathTemplateLoader();
+            loader.setPrefix("/templates");
+            loader.setSuffix(".html");
+            Handlebars handlebars = new Handlebars(loader);
+            handlebars.registerHelper("addOne", (context, options) -> (Integer) context + 1);
+            Template template = handlebars.compile("/user/list");
+            String apply = template.apply(users);
+            make200Response(apply.getBytes(), contentType, dataOutputStream, logger);
+        }catch (IOException e){
+            logger.error(e.getMessage());
+        }
+    }
+
 }
