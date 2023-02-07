@@ -1,5 +1,7 @@
 package dto;
 
+import static utils.validator.Validator.checkField;
+
 import entity.User;
 
 public class UserCreateDto {
@@ -33,6 +35,7 @@ public class UserCreateDto {
     }
 
     public User toEntity(){
+        checkFields();
         return User.builder()
                 .userId(userId)
                 .email(email)
@@ -46,15 +49,16 @@ public class UserCreateDto {
     }
 
     public static class UserCreateDtoBuilder{
+
         private String userId;
         private String password;
         private String name;
         private String email;
-
         public UserCreateDtoBuilder userId(String userId){
             this.userId=userId;
             return this;
         }
+
         public UserCreateDtoBuilder password(String password){
             this.password=password;
             return this;
@@ -67,11 +71,15 @@ public class UserCreateDto {
             this.email=email;
             return this;
         }
-
         public UserCreateDto build(){
             return new UserCreateDto(userId, password, name, email);
         }
+
     }
-
-
+    private void checkFields() {
+        checkField(userId, "userId");
+        checkField(email, "email");
+        checkField(password, "password");
+        checkField(name, "name");
+    }
 }
