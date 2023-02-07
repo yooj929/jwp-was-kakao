@@ -1,8 +1,8 @@
 package businuess.user.dao;
 
 import businuess.user.User;
-import java.util.List;
 import businuess.user.repository.UserRepository;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao {
 

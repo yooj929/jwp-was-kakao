@@ -1,8 +1,8 @@
 package businuess.home.controller;
 
 import infra.controller.BaseApis;
-import org.springframework.http.HttpMethod;
 import infra.utils.Api;
+import org.springframework.http.HttpMethod;
 
 public enum HomeControllerApis implements BaseApis {
     HELLO_WORLD_API(new Api("/", HttpMethod.GET)), INDEX_API(new Api("/index.html", HttpMethod.GET));

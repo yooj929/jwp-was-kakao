@@ -6,12 +6,12 @@ import static infra.utils.response.ResponseUtils.response200Header;
 
 import excpetion.NotMatchException;
 import infra.controller.BaseMyController;
+import infra.utils.Api;
+import infra.utils.request.MyRequest;
 import java.io.DataOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
-import infra.utils.Api;
-import infra.utils.request.MyRequest;
 
 public class HomeController extends BaseMyController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -46,7 +46,7 @@ public class HomeController extends BaseMyController {
             return;
         }
         throw new NotMatchException("api cannot be match", "api should be matched",
-                HomeController.class.getSimpleName());
+                HomeController.class.getSimpleName(), myRequest.getApi());
     }
 
     private boolean isIndex(Api api) {

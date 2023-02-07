@@ -1,6 +1,9 @@
 package infra.webserver;
 
+import excpetion.NotMatchException;
 import infra.dispatcherservlet.FrontController;
+import infra.utils.request.MyRequest;
+import infra.utils.response.ResponseUtils;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -10,7 +13,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import infra.utils.request.MyRequest;
 
 public class RequestHandler implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
@@ -34,9 +36,19 @@ public class RequestHandler implements Runnable {
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
+
     }
 
     private void toFrontController(MyRequest myRequest, DataOutputStream dos) {
-        frontController.findHandler(myRequest).handle(myRequest, dos);
+        try {
+            frontController.findHandler(myRequest).handle(myRequest, dos);
+        }catch (NullPointerException e){
+            throw new NotMatchException("api cannot be match", "api should be matched",
+                    RequestHandler.class.getSimpleName(),myRequest.getApi());
+        }
+        catch (NotMatchException e){
+            ResponseUtils.makeErrorResponse(dos, logger, e);
+            logger.error(e.getMessage());
+        }
     }
 }

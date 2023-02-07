@@ -1,10 +1,10 @@
 package infra.controller;
 
+import infra.utils.Api;
+import infra.utils.request.MyRequest;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
-import infra.utils.Api;
-import infra.utils.request.MyRequest;
 
 public abstract class BaseMyController implements MyController{
 

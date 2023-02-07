@@ -1,8 +1,8 @@
 package auth.controller;
 
 import infra.controller.BaseApis;
-import org.springframework.http.HttpMethod;
 import infra.utils.Api;
+import org.springframework.http.HttpMethod;
 
 public enum AuthLoginControllerApis implements BaseApis {
     LOGIN_API(new Api("/user/login", HttpMethod.POST));

@@ -1,12 +1,12 @@
 package businuess.statics.controller;
 
 import infra.controller.MyController;
+import infra.utils.request.MyRequest;
+import infra.utils.response.ResponseUtils;
 import java.io.DataOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
-import infra.utils.request.MyRequest;
-import infra.utils.response.ResponseUtils;
 
 public class StaticController implements MyController {
 

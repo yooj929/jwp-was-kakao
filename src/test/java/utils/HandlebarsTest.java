@@ -1,5 +1,7 @@
 package utils;
 
+import businuess.user.User;
+import businuess.user.dto.UserResponseDto;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;
@@ -11,8 +13,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import businuess.user.User;
-import businuess.user.dto.UserResponseDto;
 
 public class HandlebarsTest {
     private static final Logger log = LoggerFactory.getLogger(HandlebarsTest.class);

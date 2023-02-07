@@ -9,6 +9,11 @@ public abstract class BaseException extends RuntimeException{
         this.statusCode = statusCode;
     }
 
+    public BaseException(String message, int statusCode) {
+        super(message);
+        this.statusCode = statusCode;
+    }
+
     private static String makeMessage(String actual, String expected, String context) {
         return String.format("\r\n"
                 + "ACTUAL   : %s \r\n"

@@ -66,7 +66,7 @@ public class UserController extends BaseMyController {
             return;
         }
         throw new NotMatchException("api cannot be match", "api should be matched",
-                UserController.class.getSimpleName());
+                UserController.class.getSimpleName(),myRequest.getApi());
     }
 
     private void userList(LoginUser user, String path, String contentType, DataOutputStream dataOutputStream) {

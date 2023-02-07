@@ -1,8 +1,8 @@
 package businuess.user.controller;
 
 import infra.controller.BaseApis;
-import org.springframework.http.HttpMethod;
 import infra.utils.Api;
+import org.springframework.http.HttpMethod;
 
 public enum UserControllerApis implements BaseApis {
     USER_FORM_API(new Api("/user/form.html", HttpMethod.GET)),
