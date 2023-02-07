@@ -1,22 +1,19 @@
 package db;
 
-import model.User;
-
+import entity.User;
 import java.util.Collection;
-import java.util.Map;
 
 public class DataBase {
-    private static Map<String, User> users = Map.of();
 
-    public static void addUser(User user) {
-        users.put(user.getUserId(), user);
+    public static User addUser(User user) {
+        return UserDataBase.insert(user);
     }
 
     public static User findUserById(String userId) {
-        return users.get(userId);
+        return UserDataBase.findByUserId(userId);
     }
 
     public static Collection<User> findAll() {
-        return users.values();
+        return UserDataBase.findAll();
     }
 }

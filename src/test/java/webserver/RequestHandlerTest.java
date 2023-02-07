@@ -1,20 +1,20 @@
 package webserver;
 
-import org.junit.jupiter.api.Test;
-import support.StubSocket;
-import utils.FileIoUtils;
+import static config.AppConfig.getFrontController;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
+import support.StubSocket;
+import utils.FileIoUtils;
 
 class RequestHandlerTest {
     @Test
     void socket_out() {
         // given
         final var socket = new StubSocket();
-        final var handler = new RequestHandler(socket);
+        final var handler = new RequestHandler(socket, getFrontController());
 
         // when
         handler.run();
@@ -37,11 +37,12 @@ class RequestHandlerTest {
                 "GET /index.html HTTP/1.1 ",
                 "Host: localhost:8080 ",
                 "Connection: keep-alive ",
+                "Accept: text/html ",
                 "",
                 "");
 
         final var socket = new StubSocket(httpRequest);
-        final RequestHandler handler = new RequestHandler(socket);
+        final var handler = new RequestHandler(socket, getFrontController());
 
         // when
         handler.run();
@@ -49,11 +50,23 @@ class RequestHandlerTest {
         // then
 
 
-        var expected = "HTTP/1.1 200 \r\n" +
+        var expected = "HTTP/1.1 200 OK \r\n" +
                 "Content-Type: text/html;charset=utf-8 \r\n" +
                 "Content-Length: 6902 \r\n" +
                 "\r\n" +
                 new String(FileIoUtils.loadFileFromClasspath("templates/index.html"));
+
+        var output = socket.output().split("\n");
+        var expectedOutput = expected.split("\n");
+
+        for(int i=0; i<output.length; i++){
+            if(output[i].equals(expectedOutput[i])){
+                continue;
+            }
+            System.out.println("actual: "+output[i]);
+            System.out.println("expected: "+ expectedOutput[i]);
+        }
+
 
         assertThat(socket.output()).isEqualTo(expected);
     }
