@@ -7,15 +7,15 @@ import java.util.Optional;
 
 public class AuthLoginRepositoryImpl implements AuthLoginRepository {
 
-    private final AuthLoginDatabase loginUserDatabase;
+    private final AuthLoginDatabase authLoginDatabase;
 
-    public AuthLoginRepositoryImpl(AuthLoginDatabase loginUserDatabase) {
-        this.loginUserDatabase = loginUserDatabase;
+    public AuthLoginRepositoryImpl(AuthLoginDatabase authLoginDatabase) {
+        this.authLoginDatabase = authLoginDatabase;
     }
 
     @Override
     public Optional<AuthUserDetailsWithUuid> findByUserId(String userId) {
-        Optional<AuthUserDetails> authLoginUserDetail = loginUserDatabase.findById(userId);
+        Optional<AuthUserDetails> authLoginUserDetail = authLoginDatabase.findById(userId);
         return authLoginUserDetail.map(AuthUserDetailsWithUuid::of);
     }
 }
