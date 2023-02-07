@@ -1,6 +1,6 @@
 package infra.webserver;
 
-import config.ControllerConfig;
+import config.AppConfig;
 import java.net.ServerSocket;
 import java.net.Socket;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public class WebServer {
             // 클라이언트가 연결될때까지 대기한다.
             Socket connection;
             while ((connection = listenSocket.accept()) != null) {
-                Thread thread = new Thread(new RequestHandler(connection, ControllerConfig.INSTANCE.getFrontController()));
+                Thread thread = new Thread(new RequestHandler(connection, AppConfig.INSTANCE.getFrontController()));
                 thread.start();
             }
         }

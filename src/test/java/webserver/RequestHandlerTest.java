@@ -2,6 +2,7 @@ package webserver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import config.AppConfig;
 import config.ControllerConfig;
 import infra.webserver.RequestHandler;
 import java.io.IOException;
@@ -15,7 +16,7 @@ class RequestHandlerTest {
     void socket_out() {
         // given
         final var socket = new StubSocket();
-        final var handler = new RequestHandler(socket, ControllerConfig.INSTANCE.getFrontController());
+        final var handler = new RequestHandler(socket, AppConfig.INSTANCE.getFrontController());
 
         // when
         handler.run();
@@ -43,7 +44,7 @@ class RequestHandlerTest {
                 "");
 
         final var socket = new StubSocket(httpRequest);
-        final var handler = new RequestHandler(socket, ControllerConfig.INSTANCE.getFrontController());
+        final var handler = new RequestHandler(socket, AppConfig.INSTANCE.getFrontController());
 
         // when
         handler.run();
