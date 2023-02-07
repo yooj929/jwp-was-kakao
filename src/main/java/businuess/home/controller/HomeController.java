@@ -1,5 +1,6 @@
 package businuess.home.controller;
 
+import static businuess.home.controller.HomeControllerConstants.HELLO_WORLD_BYTES;
 import static infra.utils.response.ResponseBodyUtils.responseBody;
 import static infra.utils.response.ResponseUtils.make200TemplatesResponse;
 import static infra.utils.response.ResponseUtils.response200Header;
@@ -15,7 +16,7 @@ import org.springframework.http.HttpHeaders;
 
 public class HomeController extends BaseMyController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-    private static final byte[] HELLO_WORLD_BYTES = "Hello world".getBytes();
+
 
     public HomeController() {
         super(HomeControllerApis.values());

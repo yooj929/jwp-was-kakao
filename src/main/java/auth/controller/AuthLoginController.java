@@ -1,5 +1,7 @@
 package auth.controller;
 
+import static auth.controller.AuthLoginControllerConstants.INDEX_HTML_URL;
+import static auth.controller.AuthLoginControllerConstants.LOGIN_FAIL_HTML_URL;
 import static infra.utils.response.ResponseUtils.make302ResponseHeader;
 import static infra.utils.response.ResponseUtils.make302ResponseWithCookie;
 
@@ -7,6 +9,7 @@ import auth.AuthUserDetailsWithUuid;
 import auth.dto.AuthLoginUserDto;
 import auth.service.AuthLoginService;
 import infra.controller.BaseMyController;
+import infra.utils.request.MyCookie;
 import infra.utils.request.MyRequest;
 import java.io.DataOutputStream;
 import java.util.Optional;
@@ -16,10 +19,9 @@ import org.slf4j.LoggerFactory;
 public class AuthLoginController extends BaseMyController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthLoginController.class);
+    private static final String USER_ID = "userId";
+    private static final String PASSWORD = "password";
     private final AuthLoginService authLoginService;
-
-    private static final String REDIRECT_INDEX_URL = "/index.html";
-    private static final String REDIRECT_LOGIN_FAIL_URL = "/user/login_failed.html";
 
     public AuthLoginController(AuthLoginService authLoginService) {
         super(AuthLoginControllerApis.values());
@@ -42,14 +44,14 @@ public class AuthLoginController extends BaseMyController {
         Optional<AuthUserDetailsWithUuid> loginUserDetails = authLoginService.login(authLoginUserDto);
         if (loginUserDetails.isPresent()) {
             MyCookie cookie = new MyCookie(loginUserDetails.get().getUuid());
-            make302ResponseWithCookie(dataOutputStream, REDIRECT_INDEX_URL, cookie,logger);
+            make302ResponseWithCookie(dataOutputStream, INDEX_HTML_URL.url(), cookie,logger);
             return;
         }
-        make302ResponseHeader(dataOutputStream, REDIRECT_LOGIN_FAIL_URL, logger);
+        make302ResponseHeader(dataOutputStream, LOGIN_FAIL_HTML_URL.url(), logger);
     }
 
     private AuthLoginUserDto createAuthLoginUserDto(MyRequest myRequest) {
-        return new AuthLoginUserDto(myRequest.getParam("userId"), myRequest.getParam("password"));
+        return new AuthLoginUserDto(myRequest.getParam(USER_ID), myRequest.getParam(PASSWORD));
     }
 
 }

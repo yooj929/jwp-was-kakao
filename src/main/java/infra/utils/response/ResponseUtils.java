@@ -13,13 +13,13 @@ import static infra.utils.response.ResponseUtilsConstants.STATIC;
 import static infra.utils.response.ResponseUtilsConstants.TEMPLATES;
 import static infra.utils.response.ResponseUtilsConstants.USER_LIST;
 
-import infra.utils.request.MyCookie;
 import businuess.user.dto.UserResponseDto;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;
 import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
 import excpetion.BaseException;
 import infra.utils.FileIoUtils;
+import infra.utils.request.MyCookie;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;

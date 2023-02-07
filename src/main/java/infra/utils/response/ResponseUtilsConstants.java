@@ -16,8 +16,6 @@ public final class ResponseUtilsConstants {
     public static final String STATIC = "static";
     public static final String CONTENT_LENGTH = HttpHeaders.CONTENT_LENGTH + ": %d \r\n";
     public static final String CONTENT_TYPE = HttpHeaders.CONTENT_TYPE + ": %s;charset=utf-8 \r\n";
-    public static final String INDEX_HTML = "/index.html";
-
     public static final String USER_LIST = "/user/list";
     public static final String HTML_EXTENSION = ".html";
 

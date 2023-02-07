@@ -6,6 +6,9 @@ import static businuess.user.controller.UserControllerApis.USER_LIST_API;
 import static businuess.user.controller.UserControllerApis.USER_LIST_HTML_API;
 import static businuess.user.controller.UserControllerApis.USER_LOGIN_API;
 import static businuess.user.controller.UserControllerApis.USER_LOGIN_FAIL_API;
+import static businuess.user.controller.UserControllerConstants.INDEX_HTML_URL;
+import static businuess.user.controller.UserControllerConstants.LOGIN_HTML_URL;
+import static businuess.user.controller.UserControllerConstants.USER_FORM_HTML_URL;
 import static infra.utils.response.ResponseUtils.make200ResponseWithUsersByHandleBars;
 import static infra.utils.response.ResponseUtils.make200TemplatesResponse;
 import static infra.utils.response.ResponseUtils.make302ResponseHeader;
@@ -14,6 +17,7 @@ import businuess.user.dto.UserCreateDto;
 import businuess.user.dto.UserResponseDto;
 import businuess.user.service.UserService;
 import businuess.user.vo.LoginUser;
+import excpetion.DuplicateException;
 import excpetion.NotMatchException;
 import infra.controller.BaseMyController;
 import infra.utils.Api;
@@ -26,9 +30,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 
 public class UserController extends BaseMyController {
-
-    public static final String REDIRECT_LOGIN_URL = "/user/login.html";
-    private static final String REDIRECT_INDEX_URL = "/index.html";
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
@@ -62,27 +63,27 @@ public class UserController extends BaseMyController {
             return;
         }
         if (isUserList(myRequest.getApi())) {
-            userList(user, myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream);
+            userList(user, myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream);
             return;
         }
         throw new NotMatchException("api cannot be match", "api should be matched",
-                UserController.class.getSimpleName(),myRequest.getApi());
+                UserController.class.getSimpleName(), myRequest.getApi());
     }
 
-    private void userList(LoginUser user, String path, String contentType, DataOutputStream dataOutputStream) {
+    private void userList(LoginUser user, String contentType, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
             List<UserResponseDto> users = userService.findAll();
-            make200ResponseWithUsersByHandleBars(contentType, dataOutputStream, users,logger);
+            make200ResponseWithUsersByHandleBars(contentType, dataOutputStream, users, logger);
             return;
         }
-        make302ResponseHeader(dataOutputStream, REDIRECT_LOGIN_URL, logger);
+        make302ResponseHeader(dataOutputStream, LOGIN_HTML_URL.url(), logger);
 
 
     }
 
     private void loginForm(LoginUser user, String path, String contentType, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
-            make302ResponseHeader(dataOutputStream, REDIRECT_INDEX_URL, logger);
+            make302ResponseHeader(dataOutputStream, INDEX_HTML_URL.url(), logger);
             return;
         }
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
@@ -90,16 +91,21 @@ public class UserController extends BaseMyController {
 
     private void createUser(LoginUser user, UserCreateDto userCreateDto, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
-            make302ResponseHeader(dataOutputStream, REDIRECT_INDEX_URL, logger);
+            make302ResponseHeader(dataOutputStream, INDEX_HTML_URL.url(), logger);
             return;
         }
-        userService.create(userCreateDto);
-        make302ResponseHeader(dataOutputStream, REDIRECT_INDEX_URL, logger);
+        try {
+            userService.create(userCreateDto);
+            make302ResponseHeader(dataOutputStream, INDEX_HTML_URL.url(), logger);
+        } catch (DuplicateException e) {
+            logger.error(e.getMessage());
+            make302ResponseHeader(dataOutputStream, USER_FORM_HTML_URL.url(), logger);
+        }
     }
 
     private void form(LoginUser user, String path, String contentType, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
-            make302ResponseHeader(dataOutputStream, REDIRECT_INDEX_URL, logger);
+            make302ResponseHeader(dataOutputStream, INDEX_HTML_URL.url(), logger);
             return;
         }
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
@@ -107,7 +113,7 @@ public class UserController extends BaseMyController {
 
     private void loginFail(LoginUser user, String path, String contentType, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
-            make302ResponseHeader(dataOutputStream, REDIRECT_INDEX_URL, logger);
+            make302ResponseHeader(dataOutputStream, INDEX_HTML_URL.url(), logger);
             return;
         }
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
