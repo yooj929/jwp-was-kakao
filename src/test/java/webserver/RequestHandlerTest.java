@@ -3,6 +3,7 @@ package webserver;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import config.ControllerConfig;
+import infra.webserver.RequestHandler;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import org.junit.jupiter.api.Test;

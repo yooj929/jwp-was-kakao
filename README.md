@@ -10,7 +10,7 @@
 ### 3. Query String 파싱
 - [x] “회원가입” 메뉴를 클릭하면 http://localhost:8080/user/form.html 으로 이동하면서 회원가입할 수 있다.
 - [x] 회원가입을 하면 다음과 같은 형태로 사용자가 입력한 값이 서버에 전달된다.
-- [x] HTML과 URL을 비교해 보고 사용자가 입력한 값을 파싱해 entity.User 클래스에 저장한다.
+- [x] HTML과 URL을 비교해 보고 사용자가 입력한 값을 파싱해 user.User 클래스에 저장한다.
 - [x] 회원가입할 때 생성한 User 객체를 DataBase.addUser() 메서드를 활용해 RAM 메모리에 저장한다.
 
 ###  4. POST 방식으로 회원가입

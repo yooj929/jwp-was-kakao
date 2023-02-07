@@ -1,12 +1,12 @@
 package config;
 
-import controller.UserController;
-import dao.UserDao;
-import dao.UserDaoImpl;
-import repository.UserRepository;
-import repository.UserRepositoryImpl;
-import service.UserService;
-import service.UserServiceImpl;
+import user.controller.UserController;
+import user.dao.UserDao;
+import user.dao.UserDaoImpl;
+import user.repository.UserRepository;
+import user.repository.UserRepositoryImpl;
+import user.service.UserService;
+import user.service.UserServiceImpl;
 
 public enum UserConfig {
     INSTANCE;

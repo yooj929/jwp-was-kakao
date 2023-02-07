@@ -1,7 +1,7 @@
 package config;
 
 
-import dispatcherservlet.FrontController;
+import infra.dispatcherservlet.FrontController;
 
 public enum AppConfig {
     INSTANCE;

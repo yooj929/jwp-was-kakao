@@ -1,12 +1,12 @@
 package config;
 
 
-import controller.HomeController;
-import controller.IcoController;
-import controller.MyController;
-import controller.StaticController;
-import dispatcherservlet.FrontController;
+import controller.infra.MyController;
+import home.controller.HomeController;
+import ico.controller.IcoController;
+import infra.dispatcherservlet.FrontController;
 import java.util.List;
+import statics.controller.StaticController;
 
 public enum ControllerConfig {
     INSTANCE;
