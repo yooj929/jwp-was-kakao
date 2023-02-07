@@ -2,6 +2,8 @@ package utils.request;
 
 import static utils.IOUtils.readData;
 
+import auth.AuthLoginUserDetails;
+import config.AppConfig;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
@@ -19,12 +21,12 @@ public class MyRequest {
     private final MyRequestMap headers;
     private final MyRequestMap queryParams;
     private final Extension extension;
-
     private final Api api;
+    private AuthLoginUserDetails loginUserDetails = null;
 
     private MyRequest(HttpMethod method, String path, MyRequestMap params, MyRequestMap headers,
-                     MyRequestMap queryParams,
-                     Extension extension) {
+                      MyRequestMap queryParams,
+                      Extension extension) {
         this.method = method;
         this.path = path;
         this.params = params;
@@ -32,6 +34,10 @@ public class MyRequest {
         this.queryParams = queryParams;
         this.extension = extension;
         this.api = new Api(path, method);
+        if (headers.contains(HttpHeaders.COOKIE)) {
+            this.loginUserDetails = AppConfig.getInstance().getAuthConfig().getMyFilter()
+                    .isLogin(headers.get(HttpHeaders.COOKIE)).orElse(null);
+        }
     }
 
     public static MyRequestBuilder builder(BufferedReader bufferedReader) throws IOException {
@@ -66,9 +72,10 @@ public class MyRequest {
         return this.api;
     }
 
-    public static class MyRequestBuilder{
+    public static class MyRequestBuilder {
 
         private final MyRequestMap params;
+
         private final MyRequestMap headers;
         private final MyRequestMap queryParams;
         private final BufferedReader bufferedReader;
@@ -79,9 +86,9 @@ public class MyRequest {
             headers = new MyHeaders();
             queryParams = new MyParams();
         }
+
         public MyRequest build() throws IOException {
             String line = bufferedReader.readLine();
-            System.out.println(line);
             String[] firstLine = line.split(" ");
             HttpMethod method = HttpMethod.valueOf(firstLine[0]);
             String path = parsePath(firstLine[1]);
@@ -134,5 +141,10 @@ public class MyRequest {
 
         }
 
+
+    }
+
+    public AuthLoginUserDetails getLoginUserDetails() {
+        return loginUserDetails;
     }
 }

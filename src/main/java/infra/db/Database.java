@@ -7,7 +7,7 @@ public interface Database<T> {
 
      T save(T entity);
 
-    Optional<T> findById(String userId);
+    Optional<T> findById(String id);
 
     Collection<T> findAll();
 

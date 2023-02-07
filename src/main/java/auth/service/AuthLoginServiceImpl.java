@@ -14,9 +14,7 @@ public class AuthLoginServiceImpl implements AuthLoginService {
     }
 
     @Override
-    public boolean login(AuthLoginUserDto authLoginUserDto) {
-        Optional<AuthLoginUserDetails> authLoginUserDetails = authLoginDao.findByUserId(authLoginUserDto.getUserId());
-        return authLoginUserDetails.map(
-                loginUserDetails -> loginUserDetails.isCorrectPassword(authLoginUserDto.getPassword())).orElse(false);
+    public Optional<AuthLoginUserDetails> login(AuthLoginUserDto authLoginUserDto) {
+        return authLoginDao.findByUserId(authLoginUserDto.getUserId());
     }
 }

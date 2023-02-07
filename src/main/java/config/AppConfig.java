@@ -2,6 +2,7 @@ package config;
 
 
 import auth.config.AuthConfig;
+import user.User;
 
 public class AppConfig {
 
@@ -13,7 +14,13 @@ public class AppConfig {
         userConfig = UserConfig.getInstance();
         authConfig = AuthConfig.getInstance();
         controllerConfig = ControllerConfig.getInstance();
+        userConfig.getUserDatabase().save(User.builder()
+                .name("abc")
+                .userId("a")
+                .password("b")
+                .email("d@d").build());
     }
+
 
     private static class LazyHolder{
         private static final AppConfig instance = new AppConfig();

@@ -8,6 +8,8 @@ public class AuthLoginUserDetails {
     private final String name;
     private final String email;
 
+    private String uuid;
+
     public AuthLoginUserDetails(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
@@ -15,12 +17,12 @@ public class AuthLoginUserDetails {
         this.email = email;
     }
 
-    public static AuthLoginUserDetails of(User user){
-        return new AuthLoginUserDetails(user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public boolean isCorrectPassword(String password){
-        return this.password.equals(password);
+    public static AuthLoginUserDetails of(User user){
+        return new AuthLoginUserDetails(user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     public String getUserId() {
@@ -37,5 +39,29 @@ public class AuthLoginUserDetails {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public User toUser(){
+        return User.builder()
+                .name(name)
+                .userId(userId)
+                .password(password)
+                .email(email)
+                .build();
+    }
+
+    @Override
+    public String toString() {
+        return "AuthLoginUserDetails{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", uuid='" + uuid + '\'' +
+                '}';
     }
 }

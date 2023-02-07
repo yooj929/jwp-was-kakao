@@ -1,7 +1,9 @@
 package auth.service;
 
+import auth.AuthLoginUserDetails;
 import auth.dto.AuthLoginUserDto;
+import java.util.Optional;
 
 public interface AuthLoginService {
-    boolean login(AuthLoginUserDto authLoginUserDto);
+    Optional<AuthLoginUserDetails> login(AuthLoginUserDto authLoginUserDto);
 }

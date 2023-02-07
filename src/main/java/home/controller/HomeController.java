@@ -3,8 +3,8 @@ package home.controller;
 import static home.controller.HomeControllerApis.HELLO_WORLD_API;
 import static home.controller.HomeControllerApis.INDEX_API;
 import static utils.response.ResponseBodyUtils.responseBody;
-import static utils.response.ResponseHeaderUtils.response200Header;
 import static utils.response.ResponseUtils.make200TemplatesResponse;
+import static utils.response.ResponseUtils.response200Header;
 
 import excpetion.NotMatchException;
 import infra.controller.BaseMyController;
@@ -30,12 +30,12 @@ public class HomeController extends BaseMyController {
 
     private void helloWorld(DataOutputStream dataOutputStream) {
         byte[] body = HELLO_WORLD_BYTES;
-        response200Header(dataOutputStream, body.length);
+        response200Header(dataOutputStream, body.length,logger);
         responseBody(dataOutputStream, body);
     }
 
-    private void index(String path, String contentType, DataOutputStream dataOutputStream) {
-        make200TemplatesResponse(path, contentType, dataOutputStream, logger);
+    private void index(MyRequest request, DataOutputStream dataOutputStream) {
+        make200TemplatesResponse(request.getPath(), request.getHeader(HttpHeaders.ACCEPT), dataOutputStream, logger);
     }
 
     private void map(MyRequest myRequest, DataOutputStream dataOutputStream) {
@@ -44,7 +44,7 @@ public class HomeController extends BaseMyController {
             return;
         }
         if (isIndex(myRequest.getApi())) {
-            index(myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream);
+            index(myRequest, dataOutputStream);
             return;
         }
         throw new NotMatchException("api cannot be match", "api should be matched",
