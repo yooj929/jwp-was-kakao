@@ -33,7 +33,7 @@ public class UserController implements MyController {
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
         String path = myRequest.getPath();
         HttpMethod method = myRequest.getMethod();
-        String contentType = myRequest.getHeader(HttpHeaders.CONTENT_TYPE);
+        String contentType = myRequest.getHeader(HttpHeaders.ACCEPT);
         map(myRequest, dataOutputStream, path, method, contentType);
     }
 
