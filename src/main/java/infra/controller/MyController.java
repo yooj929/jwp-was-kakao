@@ -1,4 +1,4 @@
-package controller.infra;
+package infra.controller;
 
 import java.io.DataOutputStream;
 import utils.request.MyRequest;

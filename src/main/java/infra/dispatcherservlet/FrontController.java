@@ -1,18 +1,17 @@
 package infra.dispatcherservlet;
 
-import controller.infra.MyController;
 import excpetion.NotMatchException;
-import java.util.ArrayList;
-import java.util.Collection;
+import infra.controller.MyController;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import utils.request.MyRequest;
 
 public class FrontController {
     List<MyController> controllers;
 
-    public FrontController(Collection<MyController> collection){
-        controllers = new ArrayList<>(collection);
-
+    public FrontController(MyController... collection){
+        controllers = Arrays.stream(collection).collect(Collectors.toList());
     }
 
     public MyController findHandler(MyRequest myRequest) {

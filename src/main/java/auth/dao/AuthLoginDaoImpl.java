@@ -1,7 +1,7 @@
 package auth.dao;
 
-import auth.repository.AuthLoginRepository;
 import auth.AuthLoginUserDetails;
+import auth.repository.AuthLoginRepository;
 import java.util.Optional;
 
 public class AuthLoginDaoImpl implements AuthLoginDao {

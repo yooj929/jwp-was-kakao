@@ -2,8 +2,8 @@ package auth.controller;
 
 import static utils.response.ResponseUtils.make302Response;
 
-import auth.service.AuthLoginService;
 import auth.dto.AuthLoginUserDto;
+import auth.service.AuthLoginService;
 import infra.controller.BaseMyController;
 import java.io.DataOutputStream;
 import org.slf4j.Logger;

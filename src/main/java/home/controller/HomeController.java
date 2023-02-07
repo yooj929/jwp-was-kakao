@@ -6,28 +6,21 @@ import static utils.response.ResponseBodyUtils.responseBody;
 import static utils.response.ResponseHeaderUtils.response200Header;
 import static utils.response.ResponseUtils.make200TemplatesResponse;
 
-import controller.infra.BaseMyController;
 import excpetion.NotMatchException;
+import infra.controller.BaseMyController;
 import java.io.DataOutputStream;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
-import user.controller.UserController;
 import utils.Api;
 import utils.request.MyRequest;
 
 public class HomeController extends BaseMyController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-    private static final Set<Api> apis = Set.of(HELLO_WORLD_API.getApi(), INDEX_API.getApi());
     private static final byte[] HELLO_WORLD_BYTES = "Hello world".getBytes();
 
     public HomeController() {
-        super(Arrays.stream(HomeControllerApis.values())
-                .map(HomeControllerApis::getApi)
-                .collect(Collectors.toList()));
+        super(HomeControllerApis.values());
     }
 
     @Override

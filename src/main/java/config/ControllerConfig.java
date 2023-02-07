@@ -1,25 +1,36 @@
 package config;
 
 
-import controller.infra.MyController;
+import auth.config.AuthConfig;
 import home.controller.HomeController;
 import ico.controller.IcoController;
 import infra.dispatcherservlet.FrontController;
-import java.util.List;
 import statics.controller.StaticController;
 
-public enum ControllerConfig {
-    INSTANCE;
-    private static final List<MyController> controllers = List.of(
-            new HomeController(),
-            UserConfig.INSTANCE.getUserController(),
-            new StaticController(),
-            new IcoController()
-    );
+public class ControllerConfig {
 
-    private static final FrontController frontController = new FrontController(controllers);
+    private final FrontController frontController;
 
-    public FrontController getFrontController(){
+    private ControllerConfig() {
+        frontController = new FrontController(
+                new HomeController(),
+                new IcoController(),
+                UserConfig.getInstance().getUserController(),
+                AuthConfig.getInstance().getAuthLoginController(),
+                new StaticController()
+        );
+    }
+
+    private static class LazyHolder {
+        private static final ControllerConfig instance = new ControllerConfig();
+    }
+
+    public static ControllerConfig getInstance() {
+        return LazyHolder.instance;
+    }
+
+
+    public FrontController getFrontController() {
         return frontController;
     }
 
