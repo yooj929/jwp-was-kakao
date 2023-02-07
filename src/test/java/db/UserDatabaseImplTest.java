@@ -2,23 +2,24 @@ package db;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import auth.AuthUserDetails;
+import businuess.user.User;
+import businuess.user.db.UserDatabaseImpl;
 import java.util.Collection;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import businuess.user.User;
-import businuess.user.db.UserDatabase;
 
-class UserDatabaseTest {
+class UserDatabaseImplTest {
 
-    UserDatabase userDatabase = new UserDatabase();
+    UserDatabaseImpl userDatabaseImpl = new UserDatabaseImpl();
+
     @BeforeEach
-    void setUp(){
-        userDatabase.deleteAll();
+    void setUp() {
+        userDatabaseImpl.deleteAll();
     }
 
     @Test
-    void insert(){
+    void insert() {
         // given
         User user = User.builder()
                 .userId("1")
@@ -28,7 +29,7 @@ class UserDatabaseTest {
                 .build();
 
         // when
-        User savedUser = userDatabase.save(user);
+        User savedUser = (User) userDatabaseImpl.save(user);
 
         // then
         assertThat(savedUser).isEqualTo(user);
@@ -36,7 +37,7 @@ class UserDatabaseTest {
     }
 
     @Test
-    void findByUserId(){
+    void findByUserId() {
         // given
         User user = User.builder()
                 .userId("1")
@@ -46,17 +47,17 @@ class UserDatabaseTest {
                 .build();
 
         // when
-        User savedUser = userDatabase.save(user);
-        Optional<User> foundUser = userDatabase.findById(user.getUserId());
+        User savedUser = (User) userDatabaseImpl.save(user);
+        User foundUser = (User) userDatabaseImpl.findById(user.getUserId()).get();
 
         // then
-        assertThat(foundUser.get()).isEqualTo(savedUser);
+        assertThat(foundUser).isEqualTo(savedUser);
 
     }
 
 
     @Test
-    void findAll(){
+    void findAll() {
         // given
         User user = User.builder()
                 .userId("1")
@@ -71,11 +72,11 @@ class UserDatabaseTest {
                 .password("2")
                 .name("3")
                 .build();
-        userDatabase.save(user);
-        userDatabase.save(user2);
+        userDatabaseImpl.save(user);
+        userDatabaseImpl.save(user2);
 
         // when
-        Collection<User> users = userDatabase.findAll();
+        Collection<AuthUserDetails> users = userDatabaseImpl.findAll();
 
         // then
         assertThat(users.size()).isEqualTo(2);

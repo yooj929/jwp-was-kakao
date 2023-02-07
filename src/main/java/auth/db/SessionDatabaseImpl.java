@@ -1,6 +1,6 @@
 package auth.db;
 
-import auth.AuthLoginUserDetails;
+import auth.AuthUserDetailsWithUuid;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public class SessionDatabaseImpl implements SessionDatabase {
 
-    Map<String, AuthLoginUserDetails> database = new HashMap<>();
+    Map<String, AuthUserDetailsWithUuid> database = new HashMap<>();
     @Override
-    public AuthLoginUserDetails save(AuthLoginUserDetails entity) {
+    public AuthUserDetailsWithUuid save(AuthUserDetailsWithUuid entity) {
         if(Objects.isNull(entity)){
             return null;
         }
@@ -23,12 +23,12 @@ public class SessionDatabaseImpl implements SessionDatabase {
     }
 
     @Override
-    public Optional<AuthLoginUserDetails> findById(String id) {
+    public Optional<AuthUserDetailsWithUuid> findById(String id) {
         return Optional.ofNullable(database.get(id));
     }
 
     @Override
-    public Collection<AuthLoginUserDetails> findAll() {
+    public Collection<AuthUserDetailsWithUuid> findAll() {
         return database.values();
     }
 

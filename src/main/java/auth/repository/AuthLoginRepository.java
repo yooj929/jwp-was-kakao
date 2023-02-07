@@ -1,8 +1,8 @@
 package auth.repository;
 
-import auth.AuthLoginUserDetails;
+import auth.AuthUserDetailsWithUuid;
 import java.util.Optional;
 
 public interface AuthLoginRepository {
-    Optional<AuthLoginUserDetails> findByUserId(String userId);
+    Optional<AuthUserDetailsWithUuid> findByUserId(String userId);
 }

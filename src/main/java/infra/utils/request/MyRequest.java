@@ -2,16 +2,17 @@ package infra.utils.request;
 
 import static infra.utils.IOUtils.readData;
 
-import auth.AuthLoginUserDetails;
+import auth.AuthUserDetails;
 import businuess.config.AppConfig;
+import businuess.user.vo.LoginUser;
+import infra.utils.Api;
+import infra.utils.Extension;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import infra.utils.Api;
-import infra.utils.Extension;
 
 public class MyRequest {
 
@@ -22,7 +23,7 @@ public class MyRequest {
     private final MyRequestMap queryParams;
     private final Extension extension;
     private final Api api;
-    private AuthLoginUserDetails loginUserDetails = null;
+    private LoginUser loginUser = null;
 
     private MyRequest(HttpMethod method, String path, MyRequestMap params, MyRequestMap headers,
                       MyRequestMap queryParams,
@@ -35,8 +36,15 @@ public class MyRequest {
         this.extension = extension;
         this.api = new Api(path, method);
         if (headers.contains(HttpHeaders.COOKIE)) {
-            this.loginUserDetails = AppConfig.getInstance().getAuthConfig().getMyFilter()
-                    .isLogin(headers.get(HttpHeaders.COOKIE)).orElse(null);
+            extractLoginUser(headers.get(HttpHeaders.COOKIE));
+        }
+    }
+
+    private void extractLoginUser(String cookieValue) {
+        AuthUserDetails loginUserDetail = AppConfig.getInstance().getAuthConfig().getMyFilter()
+                .isLogin(cookieValue).orElse(null);
+        if (Objects.nonNull(loginUserDetail)) {
+            this.loginUser = new LoginUser(loginUserDetail);
         }
     }
 
@@ -144,7 +152,7 @@ public class MyRequest {
 
     }
 
-    public AuthLoginUserDetails getLoginUserDetails() {
-        return loginUserDetails;
+    public LoginUser getLoginUser() {
+        return loginUser;
     }
 }

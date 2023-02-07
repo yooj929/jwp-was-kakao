@@ -4,6 +4,7 @@ import businuess.user.controller.UserController;
 import businuess.user.dao.UserDao;
 import businuess.user.dao.UserDaoImpl;
 import businuess.user.db.UserDatabase;
+import businuess.user.db.UserDatabaseImpl;
 import businuess.user.repository.UserRepository;
 import businuess.user.repository.UserRepositoryImpl;
 import businuess.user.service.UserService;
@@ -18,7 +19,7 @@ public class UserConfig {
     private final UserController userController;
 
     private UserConfig() {
-        userDatabase = new UserDatabase();
+        userDatabase = new UserDatabaseImpl();
         userRepository = new UserRepositoryImpl(userDatabase);
         userDao = new UserDaoImpl(userRepository);
         userService = new UserServiceImpl(userDao);
@@ -42,9 +43,6 @@ public class UserConfig {
         return userService;
     }
 
-    public UserDatabase getUserDatabase() {
-        return userDatabase;
-    }
 
     public UserRepository getUserRepository() {
         return userRepository;
@@ -52,5 +50,9 @@ public class UserConfig {
 
     public UserDao getUserDao() {
         return userDao;
+    }
+
+    public UserDatabase getUserDatabase() {
+        return userDatabase;
     }
 }

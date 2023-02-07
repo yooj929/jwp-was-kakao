@@ -1,9 +1,8 @@
 package auth.db;
 
+import auth.AuthUserDetails;
 import java.util.Optional;
-import businuess.user.User;
 
 public interface AuthLoginDatabase {
-
-    Optional<User> findById(String userId);
+    Optional<AuthUserDetails> findById(String userId);
 }

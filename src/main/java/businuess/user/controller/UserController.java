@@ -10,20 +10,20 @@ import static infra.utils.response.ResponseUtils.make200ResponseWithUsersByHandl
 import static infra.utils.response.ResponseUtils.make200TemplatesResponse;
 import static infra.utils.response.ResponseUtils.make302ResponseHeader;
 
-import businuess.user.User;
 import businuess.user.dto.UserCreateDto;
 import businuess.user.dto.UserResponseDto;
 import businuess.user.service.UserService;
+import businuess.user.vo.LoginUser;
 import excpetion.NotMatchException;
 import infra.controller.BaseMyController;
+import infra.utils.Api;
+import infra.utils.request.MyRequest;
 import java.io.DataOutputStream;
 import java.util.List;
 import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
-import infra.utils.Api;
-import infra.utils.request.MyRequest;
 
 public class UserController extends BaseMyController {
 
@@ -44,10 +44,7 @@ public class UserController extends BaseMyController {
     }
 
     private void map(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        User user = null;
-        if (Objects.nonNull(myRequest.getLoginUserDetails())) {
-            user = myRequest.getLoginUserDetails().toUser();
-        }
+        LoginUser user = myRequest.getLoginUser();
         if (isUserCreate(myRequest.getApi())) {
             createUser(user, createUserCreateDto(myRequest), dataOutputStream);
             return;
@@ -72,7 +69,7 @@ public class UserController extends BaseMyController {
                 UserController.class.getSimpleName());
     }
 
-    private void userList(User user, String path, String contentType, DataOutputStream dataOutputStream) {
+    private void userList(LoginUser user, String path, String contentType, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
             List<UserResponseDto> users = userService.findAll();
             make200ResponseWithUsersByHandleBars(contentType, dataOutputStream, users,logger);
@@ -83,7 +80,7 @@ public class UserController extends BaseMyController {
 
     }
 
-    private void loginForm(User user, String path, String contentType, DataOutputStream dataOutputStream) {
+    private void loginForm(LoginUser user, String path, String contentType, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
             make302ResponseHeader(dataOutputStream, REDIRECT_INDEX_URL, logger);
             return;
@@ -91,7 +88,7 @@ public class UserController extends BaseMyController {
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 
-    private void createUser(User user, UserCreateDto userCreateDto, DataOutputStream dataOutputStream) {
+    private void createUser(LoginUser user, UserCreateDto userCreateDto, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
             make302ResponseHeader(dataOutputStream, REDIRECT_INDEX_URL, logger);
             return;
@@ -100,7 +97,7 @@ public class UserController extends BaseMyController {
         make302ResponseHeader(dataOutputStream, REDIRECT_INDEX_URL, logger);
     }
 
-    private void form(User user, String path, String contentType, DataOutputStream dataOutputStream) {
+    private void form(LoginUser user, String path, String contentType, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
             make302ResponseHeader(dataOutputStream, REDIRECT_INDEX_URL, logger);
             return;
@@ -108,7 +105,7 @@ public class UserController extends BaseMyController {
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 
-    private void loginFail(User user, String path, String contentType, DataOutputStream dataOutputStream) {
+    private void loginFail(LoginUser user, String path, String contentType, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
             make302ResponseHeader(dataOutputStream, REDIRECT_INDEX_URL, logger);
             return;

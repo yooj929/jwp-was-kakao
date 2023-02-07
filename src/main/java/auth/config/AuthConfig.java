@@ -11,7 +11,6 @@ import auth.repository.AuthLoginRepository;
 import auth.repository.AuthLoginRepositoryImpl;
 import auth.service.AuthLoginService;
 import auth.service.AuthLoginServiceImpl;
-import businuess.config.UserConfig;
 
 public class AuthConfig {
     private final AuthLoginController authLoginController;
@@ -24,7 +23,7 @@ public class AuthConfig {
 
     private final MyFilter myFilter;
 
-    private AuthConfig(AuthLoginDatabase authLoginDatabase) {
+    public AuthConfig(AuthLoginDatabase authLoginDatabase) {
         this.authLoginDatabase = authLoginDatabase;
         this.sessionDatabase = new SessionDatabaseImpl();
         this.authLoginRepository = new AuthLoginRepositoryImpl(this.authLoginDatabase, this.sessionDatabase);
@@ -44,14 +43,6 @@ public class AuthConfig {
 
     public SessionDatabase getSessionDatabase() {
         return sessionDatabase;
-    }
-
-    private static class LazyHolder{
-        private static final AuthConfig instance = new AuthConfig(UserConfig.getInstance().getUserDatabase());
-    }
-
-    public static AuthConfig getInstance(){
-        return LazyHolder.instance;
     }
 
     public AuthLoginController getAuthLoginController() {

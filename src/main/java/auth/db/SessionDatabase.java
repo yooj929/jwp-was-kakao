@@ -1,8 +1,7 @@
 package auth.db;
 
-import auth.AuthLoginUserDetails;
+import auth.AuthUserDetailsWithUuid;
 import infra.db.Database;
 
-public interface SessionDatabase extends Database<AuthLoginUserDetails> {
-
+public interface SessionDatabase extends Database<AuthUserDetailsWithUuid> {
 }

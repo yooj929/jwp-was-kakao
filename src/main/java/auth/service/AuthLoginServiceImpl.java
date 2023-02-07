@@ -1,6 +1,6 @@
 package auth.service;
 
-import auth.AuthLoginUserDetails;
+import auth.AuthUserDetailsWithUuid;
 import auth.dao.AuthLoginDao;
 import auth.dto.AuthLoginUserDto;
 import java.util.Optional;
@@ -14,7 +14,7 @@ public class AuthLoginServiceImpl implements AuthLoginService {
     }
 
     @Override
-    public Optional<AuthLoginUserDetails> login(AuthLoginUserDto authLoginUserDto) {
+    public Optional<AuthUserDetailsWithUuid> login(AuthLoginUserDto authLoginUserDto) {
         return authLoginDao.findByUserId(authLoginUserDto.getUserId());
     }
 }

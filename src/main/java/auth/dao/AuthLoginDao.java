@@ -1,8 +1,8 @@
 package auth.dao;
 
-import auth.AuthLoginUserDetails;
+import auth.AuthUserDetailsWithUuid;
 import java.util.Optional;
 
 public interface AuthLoginDao {
-    Optional<AuthLoginUserDetails> findByUserId(String userId);
+    Optional<AuthUserDetailsWithUuid> findByUserId(String userId);
 }

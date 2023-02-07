@@ -2,6 +2,9 @@ package businuess.config;
 
 
 import auth.config.AuthConfig;
+import businuess.home.controller.HomeController;
+import businuess.ico.controller.IcoController;
+import businuess.statics.controller.StaticController;
 import businuess.user.User;
 
 public class AppConfig {
@@ -12,8 +15,13 @@ public class AppConfig {
 
     private AppConfig() {
         userConfig = UserConfig.getInstance();
-        authConfig = AuthConfig.getInstance();
-        controllerConfig = ControllerConfig.getInstance();
+        authConfig = new AuthConfig(userConfig.getUserDatabase());
+        controllerConfig = new ControllerConfig(
+                new HomeController(),
+                new IcoController(),
+                UserConfig.getInstance().getUserController(),
+                authConfig.getAuthLoginController(),
+                new StaticController());
         postConstruct();
     }
 

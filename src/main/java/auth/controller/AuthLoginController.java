@@ -3,7 +3,7 @@ package auth.controller;
 import static infra.utils.response.ResponseUtils.make302ResponseHeader;
 import static infra.utils.response.ResponseUtils.make302ResponseWithCookie;
 
-import auth.AuthLoginUserDetails;
+import auth.AuthUserDetailsWithUuid;
 import auth.dto.AuthLoginUserDto;
 import auth.service.AuthLoginService;
 import infra.controller.BaseMyController;
@@ -39,7 +39,7 @@ public class AuthLoginController extends BaseMyController {
     }
 
     public void login(AuthLoginUserDto authLoginUserDto, DataOutputStream dataOutputStream) {
-        Optional<AuthLoginUserDetails> loginUserDetails = authLoginService.login(authLoginUserDto);
+        Optional<AuthUserDetailsWithUuid> loginUserDetails = authLoginService.login(authLoginUserDto);
         if (loginUserDetails.isPresent()) {
             MyCookie cookie = new MyCookie(loginUserDetails.get().getUuid());
             make302ResponseWithCookie(dataOutputStream, REDIRECT_INDEX_URL, cookie,logger);

@@ -1,6 +1,7 @@
 package auth.repository;
 
-import auth.AuthLoginUserDetails;
+import auth.AuthUserDetails;
+import auth.AuthUserDetailsWithUuid;
 import auth.db.AuthLoginDatabase;
 import auth.db.SessionDatabase;
 import java.util.Optional;
@@ -16,11 +17,10 @@ public class AuthLoginRepositoryImpl implements AuthLoginRepository {
         this.sessionDatabase = sessionDatabase;
     }
 
-
     @Override
-    public Optional<AuthLoginUserDetails> findByUserId(String userId) {
-        Optional<AuthLoginUserDetails> authLoginUserDetails = loginUserDatabase.findById(userId)
-                .map(AuthLoginUserDetails::of);
-        return Optional.ofNullable(sessionDatabase.save(authLoginUserDetails.orElse(null)));
+    public Optional<AuthUserDetailsWithUuid> findByUserId(String userId) {
+        Optional<AuthUserDetails> authLoginUserDetail = loginUserDatabase.findById(userId);
+        return authLoginUserDetail.map(
+                loginUserDetail -> sessionDatabase.save(AuthUserDetailsWithUuid.of(loginUserDetail)));
     }
 }

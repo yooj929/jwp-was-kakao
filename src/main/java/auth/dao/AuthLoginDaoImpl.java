@@ -1,6 +1,6 @@
 package auth.dao;
 
-import auth.AuthLoginUserDetails;
+import auth.AuthUserDetailsWithUuid;
 import auth.repository.AuthLoginRepository;
 import java.util.Optional;
 
@@ -13,7 +13,7 @@ public class AuthLoginDaoImpl implements AuthLoginDao {
     }
 
     @Override
-    public Optional<AuthLoginUserDetails> findByUserId(String userId) {
+    public Optional<AuthUserDetailsWithUuid> findByUserId(String userId) {
         return authLoginRepository.findByUserId(userId);
     }
 }
