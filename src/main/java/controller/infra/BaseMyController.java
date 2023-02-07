@@ -15,7 +15,6 @@ public abstract class BaseMyController implements MyController{
     }
 
     @Override
-    public boolean canHandle(MyRequest myRequest) {
-        return apis.contains(myRequest.getApi());
+    public boolean canHandle(MyRequest myRequest) {return apis.contains(myRequest.getApi());
     }
 }

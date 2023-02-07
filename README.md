@@ -29,6 +29,7 @@
 ### 1.로그인 기능 구현
 
 - [ ] “로그인” 메뉴를 클릭하면 http://localhost:8080/user/login.html 으로 이동해 로그인할 수 있다.
+  - [x] 로그인 메뉴 선택시 `/user/login.html`에 접근할 수 있다.
 - [ ] 로그인이 성공하면 index.html로 이동하고, 로그인이 실패하면 /user/login_failed.html로 이동해야 한다.
 - [ ] 회원가입한 사용자로 로그인할 수 있어야 한다.
 - [ ] 자바 진영에서 세션 아이디를 전달하는 이름으로 JSESSIONID를 사용한다.

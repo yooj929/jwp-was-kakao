@@ -81,6 +81,7 @@ public class MyRequest {
         }
         public MyRequest build() throws IOException {
             String line = bufferedReader.readLine();
+            System.out.println(line);
             String[] firstLine = line.split(" ");
             HttpMethod method = HttpMethod.valueOf(firstLine[0]);
             String path = parsePath(firstLine[1]);

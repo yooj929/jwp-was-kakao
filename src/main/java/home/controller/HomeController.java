@@ -7,6 +7,7 @@ import static utils.response.ResponseHeaderUtils.response200Header;
 import static utils.response.ResponseUtils.make200TemplatesResponse;
 
 import controller.infra.BaseMyController;
+import excpetion.NotMatchException;
 import java.io.DataOutputStream;
 import java.util.Arrays;
 import java.util.Set;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import user.controller.UserController;
 import utils.Api;
 import utils.request.MyRequest;
 
@@ -50,7 +52,10 @@ public class HomeController extends BaseMyController {
         }
         if (isIndex(myRequest.getApi())) {
             index(myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream);
+            return;
         }
+        throw new NotMatchException("api cannot be match", "api should be matched",
+                HomeController.class.getSimpleName());
     }
 
     private boolean isIndex(Api api) {
