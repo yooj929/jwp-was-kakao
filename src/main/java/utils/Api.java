@@ -37,4 +37,12 @@ public class Api {
     public int hashCode() {
         return Objects.hash(path, method);
     }
+
+    @Override
+    public String toString() {
+        return "Api{" +
+                "path='" + path + '\'' +
+                ", method=" + method +
+                '}';
+    }
 }

@@ -1,14 +1,15 @@
 package user.controller;
 
+import static user.controller.UserControllerApis.USER_CREATE_API;
+import static user.controller.UserControllerApis.USER_FORM_API;
 import static user.controller.UserControllerApis.USER_LOGIN_API;
+import static user.controller.UserControllerApis.USER_LOGIN_FAIL_API;
 import static utils.response.ResponseUtils.make200TemplatesResponse;
 import static utils.response.ResponseUtils.make302Response;
 
-import controller.infra.BaseMyController;
 import excpetion.NotMatchException;
+import infra.controller.BaseMyController;
 import java.io.DataOutputStream;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +26,7 @@ public class UserController extends BaseMyController {
     private final UserService userService;
 
     public UserController(UserService userService) {
-        super(Arrays.stream(UserControllerApis.values()).map(UserControllerApis::getApi).collect(Collectors.toList()));
+        super(UserControllerApis.values());
         this.userService = userService;
     }
 
@@ -47,6 +48,10 @@ public class UserController extends BaseMyController {
             loginForm(myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream);
             return;
         }
+        if (isUserLoginFailed(myRequest.getApi())){
+            loginFail(myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream);
+            return;
+        }
         throw new NotMatchException("api cannot be match", "api should be matched",
                 UserController.class.getSimpleName());
     }
@@ -64,16 +69,24 @@ public class UserController extends BaseMyController {
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 
+    private void loginFail(String path, String contentType, DataOutputStream dataOutputStream) {
+        make200TemplatesResponse(path, contentType, dataOutputStream, logger);
+    }
+
     private boolean isUserForm(Api api) {
-        return UserControllerApis.USER_FORM_API.getApi().equals(api);
+        return USER_FORM_API.getApi().equals(api);
     }
 
     private boolean isUserCreate(Api api) {
-        return UserControllerApis.USER_CREATE_API.getApi().equals(api);
+        return USER_CREATE_API.getApi().equals(api);
     }
 
     private boolean isUserLogin(Api api) {
         return USER_LOGIN_API.getApi().equals(api);
+    }
+
+    private boolean isUserLoginFailed(Api api) {
+        return USER_LOGIN_FAIL_API.getApi().equals(api);
     }
 
     private UserCreateDto createUserCreateDto(MyRequest myRequest) {

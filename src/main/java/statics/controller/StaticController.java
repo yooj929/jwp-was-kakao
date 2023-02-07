@@ -1,6 +1,6 @@
 package statics.controller;
 
-import controller.infra.MyController;
+import infra.controller.MyController;
 import java.io.DataOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
