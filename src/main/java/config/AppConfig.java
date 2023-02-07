@@ -10,23 +10,39 @@ public class AppConfig {
     private final AuthConfig authConfig;
     private final ControllerConfig controllerConfig;
 
-    private AppConfig(){
+    private AppConfig() {
         userConfig = UserConfig.getInstance();
         authConfig = AuthConfig.getInstance();
         controllerConfig = ControllerConfig.getInstance();
+        postConstruct();
+    }
+
+    private void postConstruct() {
         userConfig.getUserDatabase().save(User.builder()
                 .name("abc")
                 .userId("a")
                 .password("b")
                 .email("d@d").build());
+
+        userConfig.getUserDatabase().save(User.builder()
+                .name("abc")
+                .userId("ab")
+                .password("b")
+                .email("d@d").build());
+
+        userConfig.getUserDatabase().save(User.builder()
+                .name("abc")
+                .userId("abc")
+                .password("b")
+                .email("d@d").build());
+
     }
 
-
-    private static class LazyHolder{
+    private static class LazyHolder {
         private static final AppConfig instance = new AppConfig();
     }
 
-    public static AppConfig getInstance(){
+    public static AppConfig getInstance() {
         return LazyHolder.instance;
     }
 

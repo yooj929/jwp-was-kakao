@@ -2,26 +2,32 @@ package user.controller;
 
 import static user.controller.UserControllerApis.USER_CREATE_API;
 import static user.controller.UserControllerApis.USER_FORM_API;
+import static user.controller.UserControllerApis.USER_LIST_API;
+import static user.controller.UserControllerApis.USER_LIST_HTML_API;
 import static user.controller.UserControllerApis.USER_LOGIN_API;
 import static user.controller.UserControllerApis.USER_LOGIN_FAIL_API;
+import static utils.response.ResponseUtils.make200ResponseWithUsersByHandleBars;
 import static utils.response.ResponseUtils.make200TemplatesResponse;
 import static utils.response.ResponseUtils.make302ResponseHeader;
 
 import excpetion.NotMatchException;
 import infra.controller.BaseMyController;
 import java.io.DataOutputStream;
+import java.util.List;
 import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import user.User;
 import user.dto.UserCreateDto;
+import user.dto.UserResponseDto;
 import user.service.UserService;
 import utils.Api;
 import utils.request.MyRequest;
 
 public class UserController extends BaseMyController {
 
+    public static final String REDIRECT_LOGIN_URL = "/user/login.html";
     private static final String REDIRECT_INDEX_URL = "/index.html";
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -43,7 +49,7 @@ public class UserController extends BaseMyController {
             user = myRequest.getLoginUserDetails().toUser();
         }
         if (isUserCreate(myRequest.getApi())) {
-            createUser(user,createUserCreateDto(myRequest), dataOutputStream);
+            createUser(user, createUserCreateDto(myRequest), dataOutputStream);
             return;
         }
         if (isUserForm(myRequest.getApi())) {
@@ -58,8 +64,23 @@ public class UserController extends BaseMyController {
             loginFail(user, myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream);
             return;
         }
+        if (isUserList(myRequest.getApi())) {
+            userList(user, myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream);
+            return;
+        }
         throw new NotMatchException("api cannot be match", "api should be matched",
                 UserController.class.getSimpleName());
+    }
+
+    private void userList(User user, String path, String contentType, DataOutputStream dataOutputStream) {
+        if (Objects.nonNull(user)) {
+            List<UserResponseDto> users = userService.findAll();
+            make200ResponseWithUsersByHandleBars(contentType, dataOutputStream, users,logger);
+            return;
+        }
+        make302ResponseHeader(dataOutputStream, REDIRECT_LOGIN_URL, logger);
+
+
     }
 
     private void loginForm(User user, String path, String contentType, DataOutputStream dataOutputStream) {
@@ -109,6 +130,10 @@ public class UserController extends BaseMyController {
 
     private boolean isUserLoginFailed(Api api) {
         return USER_LOGIN_FAIL_API.getApi().equals(api);
+    }
+
+    private boolean isUserList(Api api) {
+        return USER_LIST_API.getApi().equals(api) || USER_LIST_HTML_API.getApi().equals(api);
     }
 
     private UserCreateDto createUserCreateDto(MyRequest myRequest) {

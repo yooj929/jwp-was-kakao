@@ -9,6 +9,8 @@ public enum UserControllerApis implements BaseApis {
     USER_CREATE_API(new Api("/user/create", HttpMethod.POST)),
     USER_LOGIN_API(new Api("/user/login.html", HttpMethod.GET)),
     USER_LOGIN_FAIL_API(new Api("/user/login_failed.html", HttpMethod.GET)),
+    USER_LIST_API(new Api("/user/list", HttpMethod.GET)),
+    USER_LIST_HTML_API(new Api("/user/list", HttpMethod.GET)),
     ;
 
     private final Api api;
