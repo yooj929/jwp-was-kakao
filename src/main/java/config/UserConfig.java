@@ -19,4 +19,8 @@ public enum UserConfig {
         return userController;
     }
 
+    public UserService getUserService() {
+        return userService;
+    }
+
 }

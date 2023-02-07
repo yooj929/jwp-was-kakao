@@ -5,64 +5,57 @@ import static utils.response.ResponseUtils.make302Response;
 
 import dto.UserCreateDto;
 import java.io.DataOutputStream;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import service.UserService;
+import utils.Api;
 import utils.request.MyRequest;
 
-public class UserController implements MyController {
+public class UserController extends BaseMyController {
 
+    private static final String REDIRECT_INDEX_URL = "/index.html";
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     private final UserService userService;
 
     public UserController(UserService userService) {
+        super(Arrays.stream(UserControllerApis.values()).map(UserControllerApis::getApi).collect(Collectors.toList()));
         this.userService = userService;
-
-    }
-
-    @Override
-    public boolean canHandle(MyRequest myRequest) {
-        String path = myRequest.getPath();
-        return path.startsWith("/user");
     }
 
     @Override
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        String path = myRequest.getPath();
-        HttpMethod method = myRequest.getMethod();
-        String contentType = myRequest.getHeader(HttpHeaders.ACCEPT);
-        map(myRequest, dataOutputStream, path, method, contentType);
+        map(myRequest, dataOutputStream);
     }
 
-    private void map(MyRequest myRequest, DataOutputStream dataOutputStream, String path, HttpMethod method,
-                     String contentType) {
-        if (isUserCreate(path, method)) {
+    private void map(MyRequest myRequest, DataOutputStream dataOutputStream) {
+        if (isUserCreate(myRequest.getApi())) {
             createUser(createUserCreateDto(myRequest), dataOutputStream);
         }
 
-        if (isUserForm(path, method)) {
-            form(path, contentType, dataOutputStream);
+        if (isUserForm(myRequest.getApi())) {
+            form(myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream);
         }
     }
 
     private void createUser(UserCreateDto userCreateDto, DataOutputStream dataOutputStream) {
         userService.create(userCreateDto);
-        make302Response(dataOutputStream, "/index.html", logger);
+        make302Response(dataOutputStream, REDIRECT_INDEX_URL, logger);
     }
 
     private void form(String path, String contentType, DataOutputStream dataOutputStream) {
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 
-    private boolean isUserForm(String path, HttpMethod method) {
-        return path.equals("/user/form.html") && method.equals(HttpMethod.GET);
+    private boolean isUserForm(Api api) {
+        return UserControllerApis.USER_FORM_API.getApi().equals(api);
     }
 
-    private boolean isUserCreate(String path, HttpMethod method) {
-        return path.equals("/user/create") && method.equals(HttpMethod.POST);
+    private boolean isUserCreate(Api api) {
+        return UserControllerApis.USER_CREATE_API.getApi().equals(api);
     }
 
     private UserCreateDto createUserCreateDto(MyRequest myRequest) {

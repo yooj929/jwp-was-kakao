@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import utils.Api;
 import utils.Extension;
 
 public class MyRequest {
@@ -19,6 +20,8 @@ public class MyRequest {
     private final MyRequestMap queryParams;
     private final Extension extension;
 
+    private final Api api;
+
     private MyRequest(HttpMethod method, String path, MyRequestMap params, MyRequestMap headers,
                      MyRequestMap queryParams,
                      Extension extension) {
@@ -28,6 +31,7 @@ public class MyRequest {
         this.headers = headers;
         this.queryParams = queryParams;
         this.extension = extension;
+        this.api = new Api(path, method);
     }
 
     public static MyRequestBuilder builder(BufferedReader bufferedReader) throws IOException {
@@ -56,6 +60,10 @@ public class MyRequest {
 
     public String getPath() {
         return path;
+    }
+
+    public Api getApi() {
+        return this.api;
     }
 
     public static class MyRequestBuilder{

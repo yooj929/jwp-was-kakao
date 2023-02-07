@@ -1,35 +1,39 @@
 package controller;
 
+import static controller.HomeControllerApis.HELLO_WORLD_API;
+import static controller.HomeControllerApis.INDEX_API;
 import static utils.response.ResponseBodyUtils.responseBody;
 import static utils.response.ResponseHeaderUtils.response200Header;
 import static utils.response.ResponseUtils.make200TemplatesResponse;
 
 import java.io.DataOutputStream;
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
+import utils.Api;
 import utils.request.MyRequest;
 
-public class HomeController implements MyController {
+public class HomeController extends BaseMyController {
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+    private static final Set<Api> apis = Set.of(HELLO_WORLD_API.getApi(), INDEX_API.getApi());
+    private static final byte[] HELLO_WORLD_BYTES = "Hello world".getBytes();
 
-    @Override
-    public boolean canHandle(MyRequest myRequest) {
-        String path = myRequest.getPath();
-        return path.equals("/") || path.equals("/index.html");
+    public HomeController() {
+        super(Arrays.stream(HomeControllerApis.values())
+                .map(HomeControllerApis::getApi)
+                .collect(Collectors.toList()));
     }
 
     @Override
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        String path = myRequest.getPath();
-        String contentType = myRequest.getHeader(HttpHeaders.ACCEPT);
-        HttpMethod method = myRequest.getMethod();
-        map(dataOutputStream, path, contentType, method);
+        map(myRequest, dataOutputStream);
     }
 
     private void helloWorld(DataOutputStream dataOutputStream) {
-        byte[] body = "Hello world".getBytes();
+        byte[] body = HELLO_WORLD_BYTES;
         response200Header(dataOutputStream, body.length);
         responseBody(dataOutputStream, body);
     }
@@ -38,22 +42,22 @@ public class HomeController implements MyController {
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
     }
 
-    private void map(DataOutputStream dataOutputStream, String path, String contentType, HttpMethod method) {
-        if (isHelloWorld(path, method)) {
+    private void map(MyRequest myRequest, DataOutputStream dataOutputStream) {
+        if (isHelloWorld(myRequest.getApi())) {
             helloWorld(dataOutputStream);
             return;
         }
-        if (isIndex(path, method)) {
-            index(path, contentType, dataOutputStream);
+        if (isIndex(myRequest.getApi())) {
+            index(myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream);
         }
     }
 
-    private boolean isIndex(String path, HttpMethod method) {
-        return path.equals("/index.html") && method.equals(HttpMethod.GET);
+    private boolean isIndex(Api api) {
+        return api.equals(INDEX_API.getApi());
     }
 
-    private boolean isHelloWorld(String path, HttpMethod method) {
-        return path.equals("/") && method.equals(HttpMethod.GET);
+    private boolean isHelloWorld(Api api) {
+        return api.equals(HELLO_WORLD_API.getApi());
     }
 
 }

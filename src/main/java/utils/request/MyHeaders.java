@@ -1,6 +1,5 @@
 package utils.request;
 
-import java.util.Objects;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -11,7 +10,7 @@ public class MyHeaders extends MyRequestMap{
             String value = getOrDefault(key, MediaType.TEXT_HTML_VALUE);
             return value.split(",")[0];
         }
-        return get(key);
+        return super.get(key);
     }
 
 }
