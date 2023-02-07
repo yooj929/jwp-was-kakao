@@ -11,10 +11,10 @@ public class FieldValidator {
 
     public static <T> void checkField(T field, String fieldName) {
         if (field instanceof String) {
-            checkStringField(field,fieldName);
+            checkStringField((String) field, fieldName);
             return;
         }
-        checkOtherField(field,fieldName);
+        checkOtherField(field, fieldName);
     }
 
     private static <T> void checkOtherField(T field, String fieldName) {
@@ -23,7 +23,7 @@ public class FieldValidator {
         }
     }
 
-    private static <T> void checkStringField(T field, String fieldName) {
+    private static void checkStringField(String field, String fieldName) {
         if (StringUtils.isEmpty(field)) {
             throw new NullOrBlankFieldException("null or blank", fieldName);
         }
