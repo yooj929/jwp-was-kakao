@@ -2,6 +2,7 @@ package auth.controller;
 
 import static auth.controller.AuthLoginControllerConstants.INDEX_HTML_URL;
 import static auth.controller.AuthLoginControllerConstants.LOGIN_FAIL_HTML_URL;
+import static auth.controller.AuthLoginControllerMapper.isLogin;
 import static infra.utils.response.ResponseUtils.make302ResponseHeader;
 import static infra.utils.response.ResponseUtils.make302ResponseWithCookie;
 
@@ -35,7 +36,7 @@ public class AuthLoginController extends BaseMyController {
     }
 
     public void map(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        if (myRequest.getApi().equals(AuthLoginControllerApis.LOGIN_API.getApi())) {
+        if (isLogin(myRequest)) {
             login(createAuthLoginUserDto(myRequest), dataOutputStream);
         }
     }

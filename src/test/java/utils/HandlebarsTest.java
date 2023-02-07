@@ -31,7 +31,7 @@ public class HandlebarsTest {
         loader.setSuffix(".html");
         Handlebars handlebars = new Handlebars(loader);
 
-        Template template = handlebars.compile("businuess/user/profile");
+        Template template = handlebars.compile("/user/profile");
 
         User user = User.builder()
                 .userId("javajigi")
@@ -51,7 +51,7 @@ public class HandlebarsTest {
         loader.setSuffix(".html");
         Handlebars handlebars = new Handlebars(loader);
         handlebars.registerHelper("addOne", addOne);
-        Template template = handlebars.compile("businuess/user/list");
+        Template template = handlebars.compile("/user/list");
         User user = User.builder()
                 .userId("javajigi")
                 .password("password")

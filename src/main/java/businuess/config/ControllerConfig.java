@@ -12,7 +12,6 @@ public class ControllerConfig {
         frontController = new FrontController(myControllers);
     }
 
-
     public FrontController getFrontController() {
         return frontController;
     }

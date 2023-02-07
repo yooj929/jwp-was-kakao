@@ -1,13 +1,14 @@
 package businuess.home.controller;
 
 import static businuess.home.controller.HomeControllerConstants.HELLO_WORLD_BYTES;
+import static businuess.home.controller.HomeControllerMapper.isHelloWorld;
+import static businuess.home.controller.HomeControllerMapper.isIndex;
 import static infra.utils.response.ResponseBodyUtils.responseBody;
 import static infra.utils.response.ResponseUtils.make200TemplatesResponse;
 import static infra.utils.response.ResponseUtils.response200Header;
 
 import excpetion.NotMatchException;
 import infra.controller.BaseMyController;
-import infra.utils.Api;
 import infra.utils.request.MyRequest;
 import java.io.DataOutputStream;
 import org.slf4j.Logger;
@@ -27,16 +28,6 @@ public class HomeController extends BaseMyController {
         map(myRequest, dataOutputStream);
     }
 
-    private void helloWorld(DataOutputStream dataOutputStream) {
-        byte[] body = HELLO_WORLD_BYTES;
-        response200Header(dataOutputStream, body.length,logger);
-        responseBody(dataOutputStream, body);
-    }
-
-    private void index(MyRequest request, DataOutputStream dataOutputStream) {
-        make200TemplatesResponse(request.getPath(), request.getHeader(HttpHeaders.ACCEPT), dataOutputStream, logger);
-    }
-
     private void map(MyRequest myRequest, DataOutputStream dataOutputStream) {
         if (isHelloWorld(myRequest.getApi())) {
             helloWorld(dataOutputStream);
@@ -50,12 +41,14 @@ public class HomeController extends BaseMyController {
                 HomeController.class.getSimpleName(), myRequest.getApi());
     }
 
-    private boolean isIndex(Api api) {
-        return api.equals(HomeControllerApis.INDEX_API.getApi());
+    private void helloWorld(DataOutputStream dataOutputStream) {
+        byte[] body = HELLO_WORLD_BYTES;
+        response200Header(dataOutputStream, body.length,logger);
+        responseBody(dataOutputStream, body);
     }
 
-    private boolean isHelloWorld(Api api) {
-        return api.equals(HomeControllerApis.HELLO_WORLD_API.getApi());
+    private void index(MyRequest request, DataOutputStream dataOutputStream) {
+        make200TemplatesResponse(request.getPath(), request.getHeader(HttpHeaders.ACCEPT), dataOutputStream, logger);
     }
 
 }

@@ -1,14 +1,13 @@
 package businuess.user.controller;
 
-import static businuess.user.controller.UserControllerApis.USER_CREATE_API;
-import static businuess.user.controller.UserControllerApis.USER_FORM_API;
-import static businuess.user.controller.UserControllerApis.USER_LIST_API;
-import static businuess.user.controller.UserControllerApis.USER_LIST_HTML_API;
-import static businuess.user.controller.UserControllerApis.USER_LOGIN_API;
-import static businuess.user.controller.UserControllerApis.USER_LOGIN_FAIL_API;
 import static businuess.user.controller.UserControllerConstants.INDEX_HTML_URL;
 import static businuess.user.controller.UserControllerConstants.LOGIN_HTML_URL;
 import static businuess.user.controller.UserControllerConstants.USER_FORM_HTML_URL;
+import static businuess.user.controller.UserControllerMapper.isUserCreate;
+import static businuess.user.controller.UserControllerMapper.isUserForm;
+import static businuess.user.controller.UserControllerMapper.isUserList;
+import static businuess.user.controller.UserControllerMapper.isUserLogin;
+import static businuess.user.controller.UserControllerMapper.isUserLoginFailed;
 import static infra.utils.response.ResponseUtils.make200ResponseWithUsersByHandleBars;
 import static infra.utils.response.ResponseUtils.make200TemplatesResponse;
 import static infra.utils.response.ResponseUtils.make302ResponseHeader;
@@ -20,7 +19,6 @@ import businuess.user.vo.LoginUser;
 import excpetion.DuplicateException;
 import excpetion.NotMatchException;
 import infra.controller.BaseMyController;
-import infra.utils.Api;
 import infra.utils.request.MyRequest;
 import java.io.DataOutputStream;
 import java.util.List;
@@ -117,26 +115,6 @@ public class UserController extends BaseMyController {
             return;
         }
         make200TemplatesResponse(path, contentType, dataOutputStream, logger);
-    }
-
-    private boolean isUserForm(Api api) {
-        return USER_FORM_API.getApi().equals(api);
-    }
-
-    private boolean isUserCreate(Api api) {
-        return USER_CREATE_API.getApi().equals(api);
-    }
-
-    private boolean isUserLogin(Api api) {
-        return USER_LOGIN_API.getApi().equals(api);
-    }
-
-    private boolean isUserLoginFailed(Api api) {
-        return USER_LOGIN_FAIL_API.getApi().equals(api);
-    }
-
-    private boolean isUserList(Api api) {
-        return USER_LIST_API.getApi().equals(api) || USER_LIST_HTML_API.getApi().equals(api);
     }
 
     private UserCreateDto createUserCreateDto(MyRequest myRequest) {
