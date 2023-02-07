@@ -13,7 +13,7 @@ import static infra.utils.response.ResponseUtilsConstants.STATIC;
 import static infra.utils.response.ResponseUtilsConstants.TEMPLATES;
 import static infra.utils.response.ResponseUtilsConstants.USER_LIST;
 
-import auth.controller.MyCookie;
+import infra.utils.request.MyCookie;
 import businuess.user.dto.UserResponseDto;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Template;

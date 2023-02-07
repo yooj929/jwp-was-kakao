@@ -1,4 +1,4 @@
-package auth.controller;
+package infra.utils.request;
 
 public class MyCookie {
 

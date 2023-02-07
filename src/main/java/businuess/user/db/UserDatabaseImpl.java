@@ -1,9 +1,11 @@
 package businuess.user.db;
 
 import auth.AuthUserDetails;
+import excpetion.DuplicateException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class UserDatabaseImpl implements UserDatabase{
@@ -16,6 +18,9 @@ public class UserDatabaseImpl implements UserDatabase{
 
     @Override
     public AuthUserDetails save(AuthUserDetails entity) {
+        if (Objects.nonNull(database.get(entity.getUserId()))) {
+            throw new DuplicateException(UserDatabaseImpl.class.getSimpleName());
+        }
         database.put(entity.getUserId(), entity);
         return entity;
     }

@@ -6,6 +6,7 @@ import businuess.home.controller.HomeController;
 import businuess.ico.controller.IcoController;
 import businuess.statics.controller.StaticController;
 import businuess.user.User;
+import infra.session.SessionManager;
 
 public class AppConfig {
 
@@ -14,8 +15,9 @@ public class AppConfig {
     private final ControllerConfig controllerConfig;
 
     private AppConfig() {
+        SessionManager sessionManager = SessionManager.getInstance();
         userConfig = UserConfig.getInstance();
-        authConfig = new AuthConfig(userConfig.getUserDatabase());
+        authConfig = new AuthConfig(userConfig.getUserDatabase(),sessionManager);
         controllerConfig = new ControllerConfig(
                 new HomeController(),
                 new IcoController(),

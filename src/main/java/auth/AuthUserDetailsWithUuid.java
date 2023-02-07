@@ -1,26 +1,25 @@
 package auth;
 
+import java.util.UUID;
+
 public class AuthUserDetailsWithUuid implements AuthUserDetails {
     private final String userId;
     private final String password;
     private final String name;
     private final String email;
-    private String uuid;
+    private final String uuid;
 
     public AuthUserDetailsWithUuid(String userId, String password, String name, String email) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.uuid = UUID.randomUUID().toString();
     }
 
     public static AuthUserDetailsWithUuid of(AuthUserDetails authUserDetails){
         return new AuthUserDetailsWithUuid(authUserDetails.getUserId(), authUserDetails.getPassword(),
                 authUserDetails.getName(), authUserDetails.getEmail());
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     @Override

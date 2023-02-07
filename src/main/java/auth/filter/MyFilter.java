@@ -1,28 +1,30 @@
 package auth.filter;
 
-import auth.AuthUserDetailsWithUuid;
-import auth.db.SessionDatabase;
-import java.util.Optional;
+import auth.AuthUserDetails;
+import infra.session.Session;
+import infra.session.SessionManager;
+import java.util.Objects;
 
 public class MyFilter {
 
-    private final SessionDatabase sessionDatabase;
+    public static final String JSESSIONID = "JSESSIONID";
+    private final SessionManager sessionManager;
 
-    public MyFilter(SessionDatabase sessionDatabase) {
-        this.sessionDatabase = sessionDatabase;
+    public MyFilter(SessionManager sessionManager) {
+        this.sessionManager = sessionManager;
     }
-    public Optional<AuthUserDetailsWithUuid> isLogin(String data) {
+    public AuthUserDetails isLogin(String data) {
         String[] cookies = data.split("; ");
         for (String cookie : cookies) {
-            if (cookie.startsWith("JSESSIONID")){
+            if (cookie.startsWith(JSESSIONID)){
                 String value = cookie.split("=")[1];
-                Optional<AuthUserDetailsWithUuid> byId = sessionDatabase.findById(value);
-                if(byId.isPresent()){
-                    return byId;
-                };
+                Session session = sessionManager.findSession(value);
+                if(Objects.nonNull(session)){
+                    return (AuthUserDetails) session.getAttribute(value);
+                }
             }
         }
-        return Optional.empty();
+        return null;
     }
 
 

@@ -4,13 +4,12 @@ import auth.controller.AuthLoginController;
 import auth.dao.AuthLoginDao;
 import auth.dao.AuthLoginDaoImpl;
 import auth.db.AuthLoginDatabase;
-import auth.db.SessionDatabase;
-import auth.db.SessionDatabaseImpl;
 import auth.filter.MyFilter;
 import auth.repository.AuthLoginRepository;
 import auth.repository.AuthLoginRepositoryImpl;
 import auth.service.AuthLoginService;
 import auth.service.AuthLoginServiceImpl;
+import infra.session.SessionManager;
 
 public class AuthConfig {
     private final AuthLoginController authLoginController;
@@ -18,19 +17,15 @@ public class AuthConfig {
     private final AuthLoginDao authLoginDao;
     private final AuthLoginRepository authLoginRepository;
     private final AuthLoginDatabase authLoginDatabase;
-
-    private final SessionDatabase sessionDatabase;
-
     private final MyFilter myFilter;
 
-    public AuthConfig(AuthLoginDatabase authLoginDatabase) {
+    public AuthConfig(AuthLoginDatabase authLoginDatabase, SessionManager sessionManager) {
         this.authLoginDatabase = authLoginDatabase;
-        this.sessionDatabase = new SessionDatabaseImpl();
-        this.authLoginRepository = new AuthLoginRepositoryImpl(this.authLoginDatabase, this.sessionDatabase);
+        this.authLoginRepository = new AuthLoginRepositoryImpl(this.authLoginDatabase);
         this.authLoginDao = new AuthLoginDaoImpl(this.authLoginRepository);
-        this.authLoginService = new AuthLoginServiceImpl(this.authLoginDao);
+        this.authLoginService = new AuthLoginServiceImpl(this.authLoginDao,sessionManager);
         this.authLoginController = new AuthLoginController(this.authLoginService);
-        this.myFilter = new MyFilter(this.sessionDatabase);
+        this.myFilter = new MyFilter(sessionManager);
     }
 
     public MyFilter getMyFilter() {
@@ -41,9 +36,6 @@ public class AuthConfig {
         return authLoginDatabase;
     }
 
-    public SessionDatabase getSessionDatabase() {
-        return sessionDatabase;
-    }
 
     public AuthLoginController getAuthLoginController() {
         return authLoginController;

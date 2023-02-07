@@ -42,7 +42,7 @@ public class MyRequest {
 
     private void extractLoginUser(String cookieValue) {
         AuthUserDetails loginUserDetail = AppConfig.getInstance().getAuthConfig().getMyFilter()
-                .isLogin(cookieValue).orElse(null);
+                .isLogin(cookieValue);
         if (Objects.nonNull(loginUserDetail)) {
             this.loginUser = new LoginUser(loginUserDetail);
         }
@@ -81,9 +81,7 @@ public class MyRequest {
     }
 
     public static class MyRequestBuilder {
-
         private final MyRequestMap params;
-
         private final MyRequestMap headers;
         private final MyRequestMap queryParams;
         private final BufferedReader bufferedReader;
