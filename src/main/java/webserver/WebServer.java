@@ -1,7 +1,6 @@
 package webserver;
 
-import static config.AppConfig.getFrontController;
-
+import config.ControllerConfig;
 import java.net.ServerSocket;
 import java.net.Socket;
 import org.slf4j.Logger;
@@ -26,9 +25,10 @@ public class WebServer {
             // 클라이언트가 연결될때까지 대기한다.
             Socket connection;
             while ((connection = listenSocket.accept()) != null) {
-                Thread thread = new Thread(new RequestHandler(connection, getFrontController()));
+                Thread thread = new Thread(new RequestHandler(connection, ControllerConfig.INSTANCE.getFrontController()));
                 thread.start();
             }
         }
     }
 }
+ㅎ

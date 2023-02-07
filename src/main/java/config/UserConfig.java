@@ -9,13 +9,13 @@ import service.UserService;
 import service.UserServiceImpl;
 
 public enum UserConfig {
-    ;
-    private static final UserRepository userRepository = new UserRepositoryImpl();
-    private static final UserDao userDao = new UserDaoImpl(userRepository);
-    private static final UserService userService = new UserServiceImpl(userDao);
-    private static final UserController userController = new UserController(userService);
+    INSTANCE;
+    private final UserRepository userRepository = new UserRepositoryImpl();
+    private final UserDao userDao = new UserDaoImpl(userRepository);
+    private final UserService userService = new UserServiceImpl(userDao);
+    private final UserController userController = new UserController(userService);
 
-    public static UserController getUserController() {
+    public UserController getUserController() {
         return userController;
     }
 
