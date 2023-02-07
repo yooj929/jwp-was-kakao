@@ -42,7 +42,7 @@ public class MyRequest {
 
     private void extractLoginUser(String cookieValue) {
         AuthUserDetails loginUserDetail = AppConfig.getInstance().getAuthConfig().getMyFilter()
-                .isLogin(cookieValue);
+                .isLoginUser(cookieValue);
         if (Objects.nonNull(loginUserDetail)) {
             this.loginUser = new LoginUser(loginUserDetail);
         }

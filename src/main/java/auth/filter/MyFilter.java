@@ -13,7 +13,7 @@ public class MyFilter {
     public MyFilter(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
     }
-    public AuthUserDetails isLogin(String data) {
+    public AuthUserDetails isLoginUser(String data) {
         String[] cookies = data.split("; ");
         for (String cookie : cookies) {
             if (cookie.startsWith(JSESSIONID)){
