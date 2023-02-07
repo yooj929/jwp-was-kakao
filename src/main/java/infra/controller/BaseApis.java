@@ -1,6 +1,6 @@
 package infra.controller;
 
-import utils.Api;
+import infra.utils.Api;
 
 public interface BaseApis {
     Api getApi();

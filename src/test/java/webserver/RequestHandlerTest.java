@@ -2,13 +2,13 @@ package webserver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import config.AppConfig;
+import businuess.config.AppConfig;
 import infra.webserver.RequestHandler;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import org.junit.jupiter.api.Test;
 import support.StubSocket;
-import utils.FileIoUtils;
+import infra.utils.FileIoUtils;
 
 class RequestHandlerTest {
     @Test

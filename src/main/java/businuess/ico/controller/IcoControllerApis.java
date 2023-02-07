@@ -1,19 +1,20 @@
-package auth.controller;
+package businuess.ico.controller;
 
 import infra.controller.BaseApis;
 import org.springframework.http.HttpMethod;
 import infra.utils.Api;
 
-public enum AuthLoginControllerApis implements BaseApis {
-    LOGIN_API(new Api("/user/login", HttpMethod.POST));
+public enum IcoControllerApis implements BaseApis {
+    ICO_API(new Api("/favicon.ico", HttpMethod.GET));
 
     private final Api api;
 
-    AuthLoginControllerApis(Api api) {
+    IcoControllerApis(Api api) {
         this.api = api;
     }
 
     public Api getApi() {
         return api;
     }
+
 }

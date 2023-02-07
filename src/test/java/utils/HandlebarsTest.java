@@ -11,8 +11,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import user.User;
-import user.dto.UserResponseDto;
+import businuess.user.User;
+import businuess.user.dto.UserResponseDto;
 
 public class HandlebarsTest {
     private static final Logger log = LoggerFactory.getLogger(HandlebarsTest.class);
@@ -31,7 +31,7 @@ public class HandlebarsTest {
         loader.setSuffix(".html");
         Handlebars handlebars = new Handlebars(loader);
 
-        Template template = handlebars.compile("user/profile");
+        Template template = handlebars.compile("businuess/user/profile");
 
         User user = User.builder()
                 .userId("javajigi")
@@ -51,7 +51,7 @@ public class HandlebarsTest {
         loader.setSuffix(".html");
         Handlebars handlebars = new Handlebars(loader);
         handlebars.registerHelper("addOne", addOne);
-        Template template = handlebars.compile("user/list");
+        Template template = handlebars.compile("businuess/user/list");
         User user = User.builder()
                 .userId("javajigi")
                 .password("password")

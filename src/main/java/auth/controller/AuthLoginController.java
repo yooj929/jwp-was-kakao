@@ -1,7 +1,7 @@
 package auth.controller;
 
-import static utils.response.ResponseUtils.make302ResponseHeader;
-import static utils.response.ResponseUtils.make302ResponseWithCookie;
+import static infra.utils.response.ResponseUtils.make302ResponseHeader;
+import static infra.utils.response.ResponseUtils.make302ResponseWithCookie;
 
 import auth.AuthLoginUserDetails;
 import auth.dto.AuthLoginUserDto;
@@ -11,7 +11,7 @@ import java.io.DataOutputStream;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.request.MyRequest;
+import infra.utils.request.MyRequest;
 
 public class AuthLoginController extends BaseMyController {
 

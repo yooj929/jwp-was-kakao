@@ -1,7 +1,7 @@
 package infra.controller;
 
 import java.io.DataOutputStream;
-import utils.request.MyRequest;
+import infra.utils.request.MyRequest;
 
 public interface MyController {
 

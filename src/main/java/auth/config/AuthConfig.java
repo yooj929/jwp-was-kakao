@@ -11,7 +11,7 @@ import auth.repository.AuthLoginRepository;
 import auth.repository.AuthLoginRepositoryImpl;
 import auth.service.AuthLoginService;
 import auth.service.AuthLoginServiceImpl;
-import config.UserConfig;
+import businuess.config.UserConfig;
 
 public class AuthConfig {
     private final AuthLoginController authLoginController;

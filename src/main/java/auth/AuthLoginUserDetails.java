@@ -1,6 +1,6 @@
 package auth;
 
-import user.User;
+import businuess.user.User;
 
 public class AuthLoginUserDetails {
     private final String userId;

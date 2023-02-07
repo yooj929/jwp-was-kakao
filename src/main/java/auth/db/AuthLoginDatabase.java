@@ -1,7 +1,7 @@
 package auth.db;
 
 import java.util.Optional;
-import user.User;
+import businuess.user.User;
 
 public interface AuthLoginDatabase {
 
