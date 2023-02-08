@@ -9,8 +9,10 @@ import infra.session.SessionManager;
 import java.util.Optional;
 
 public class AuthLoginServiceImpl implements AuthLoginService {
+
     private final AuthLoginDao authLoginDao;
     private final SessionManager sessionManager;
+
     public AuthLoginServiceImpl(AuthLoginDao authLoginDao, SessionManager sessionManager) {
         this.authLoginDao = authLoginDao;
         this.sessionManager = sessionManager;
@@ -22,6 +24,7 @@ public class AuthLoginServiceImpl implements AuthLoginService {
         if (authUserDetails.isPresent() && isValid(authUserDetails.get(), authLoginUserDto)) {
             AuthUserDetailsWithUuid presentDetails = authUserDetails.get();
             makeSession(presentDetails);
+            return authUserDetails;
         }
         return Optional.empty();
     }
