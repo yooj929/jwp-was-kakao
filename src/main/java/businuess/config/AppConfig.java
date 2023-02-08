@@ -2,6 +2,7 @@ package businuess.config;
 
 
 import auth.config.AuthConfig;
+import auth.config.AuthConfigProxy;
 import businuess.home.controller.HomeController;
 import businuess.ico.controller.IcoController;
 import businuess.statics.controller.StaticController;
@@ -17,7 +18,7 @@ public class AppConfig {
     private AppConfig() {
         SessionManager sessionManager = SessionManager.getInstance();
         userConfig = UserConfig.getInstance();
-        authConfig = new AuthConfig(userConfig.getUserDatabase(),sessionManager);
+        authConfig = AuthConfigProxy.createInstance(userConfig.getUserDatabase(), sessionManager);
         controllerConfig = new ControllerConfig(
                 new HomeController(),
                 new IcoController(),
