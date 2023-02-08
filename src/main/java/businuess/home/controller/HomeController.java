@@ -1,9 +1,9 @@
 package businuess.home.controller;
 
 import static businuess.home.controller.HomeControllerConstants.HELLO_WORLD_BYTES;
+import static infra.utils.response.Response200HeaderUtils.response200Header;
 import static infra.utils.response.ResponseBodyUtils.responseBody;
 import static infra.utils.response.ResponseUtils.make200TemplatesResponse;
-import static infra.utils.response.ResponseUtils.response200Header;
 
 import infra.controller.MyController;
 import infra.controller.MyGetMapping;

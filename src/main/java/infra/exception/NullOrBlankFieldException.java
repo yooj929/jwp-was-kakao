@@ -1,4 +1,4 @@
-package excpetion;
+package infra.exception;
 
 import org.springframework.http.HttpStatus;
 

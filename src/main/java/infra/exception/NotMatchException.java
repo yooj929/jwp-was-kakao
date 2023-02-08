@@ -1,9 +1,9 @@
-package excpetion;
+package infra.exception;
 
 import infra.utils.Api;
 import org.springframework.http.HttpStatus;
 
-public class NotMatchException extends BaseException{
+public class NotMatchException extends BaseException {
     public NotMatchException(String actual, String expected, String context, Api api) {
         super(makeMessage(actual,expected,context,api), HttpStatus.BAD_REQUEST.value());
     }

@@ -2,14 +2,13 @@ package infra.utils.request;
 
 import static infra.utils.IOUtils.readData;
 
-import auth.AuthUserDetails;
-import businuess.config.AppConfig;
-import businuess.user.vo.LoginUser;
 import infra.utils.Api;
 import infra.utils.Extension;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,9 +22,9 @@ public class MyRequest {
     private final MyRequestMap queryParams;
     private final Extension extension;
     private final Api api;
-    private LoginUser loginUser = null;
+    private final Map<Class<?>, Object> context = new HashMap<>();
 
-    private MyRequest(HttpMethod method, String path, MyRequestMap params, MyRequestMap headers,
+    protected MyRequest(HttpMethod method, String path, MyRequestMap params, MyRequestMap headers,
                       MyRequestMap queryParams,
                       Extension extension) {
         this.method = method;
@@ -35,21 +34,19 @@ public class MyRequest {
         this.queryParams = queryParams;
         this.extension = extension;
         this.api = new Api(path, method);
-        if (headers.contains(HttpHeaders.COOKIE)) {
-            extractLoginUser(headers.get(HttpHeaders.COOKIE));
-        }
     }
 
-    private void extractLoginUser(String cookieValue) {
-        AuthUserDetails loginUserDetail = AppConfig.getInstance().getAuthConfig().getMyFilter()
-                .isLoginUser(cookieValue);
-        if (Objects.nonNull(loginUserDetail)) {
-            this.loginUser = new LoginUser(loginUserDetail);
-        }
-    }
 
     public static MyRequestBuilder builder(BufferedReader bufferedReader) throws IOException {
         return new MyRequestBuilder(bufferedReader);
+    }
+
+    public void putContext(Class<?> type, Object object){
+        context.put(type, object);
+    }
+
+    public Object getContext(Class<?> type){
+        return context.get(type);
     }
 
     public boolean isStatic() {
@@ -146,11 +143,5 @@ public class MyRequest {
             });
 
         }
-
-
-    }
-
-    public LoginUser getLoginUser() {
-        return loginUser;
     }
 }

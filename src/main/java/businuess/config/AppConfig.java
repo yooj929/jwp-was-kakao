@@ -3,11 +3,13 @@ package businuess.config;
 
 import auth.config.AuthConfig;
 import auth.config.AuthConfigProxy;
+import auth.filter.JSessionAuthUserDetailsFilter;
 import businuess.home.controller.HomeController;
 import businuess.ico.controller.IcoController;
-import businuess.statics.controller.StaticController;
+import businuess.statics.controller.MyStaticControllerImpl;
 import businuess.user.User;
 import infra.session.SessionManager;
+import java.util.List;
 
 public class AppConfig {
 
@@ -19,7 +21,8 @@ public class AppConfig {
         SessionManager sessionManager = SessionManager.getInstance();
         userConfig = UserConfig.getInstance();
         authConfig = AuthConfigProxy.createInstance(userConfig.getUserDatabase(), sessionManager);
-        controllerConfig = new ControllerConfig(new StaticController(),
+        controllerConfig = new ControllerConfig(new MyStaticControllerImpl(),
+                List.of(new JSessionAuthUserDetailsFilter(sessionManager)),
                 new HomeController(),
                 new IcoController(),
                 UserConfig.getInstance().getUserController(),

@@ -1,6 +1,6 @@
 package infra.utils.validator;
 
-import excpetion.NullOrBlankFieldException;
+import infra.exception.NullOrBlankFieldException;
 import java.util.Objects;
 import org.springframework.util.StringUtils;
 

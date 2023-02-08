@@ -4,7 +4,7 @@ import auth.controller.AuthLoginController;
 import auth.dao.AuthLoginDao;
 import auth.dao.AuthLoginDaoImpl;
 import auth.db.AuthLoginDatabase;
-import auth.filter.MyFilter;
+import auth.filter.JSessionAuthUserDetailsFilter;
 import auth.repository.AuthLoginRepository;
 import auth.repository.AuthLoginRepositoryImpl;
 import auth.service.AuthLoginService;
@@ -17,7 +17,7 @@ public class AuthConfig {
     private final AuthLoginDao authLoginDao;
     private final AuthLoginRepository authLoginRepository;
     private final AuthLoginDatabase authLoginDatabase;
-    private final MyFilter myFilter;
+    private final JSessionAuthUserDetailsFilter myFilter;
 
     protected AuthConfig(AuthLoginDatabase authLoginDatabase, SessionManager sessionManager) {
         this.authLoginDatabase = authLoginDatabase;
@@ -25,10 +25,10 @@ public class AuthConfig {
         this.authLoginDao = new AuthLoginDaoImpl(this.authLoginRepository);
         this.authLoginService = new AuthLoginServiceImpl(this.authLoginDao,sessionManager);
         this.authLoginController = new AuthLoginController(this.authLoginService);
-        this.myFilter = new MyFilter(sessionManager);
+        this.myFilter = new JSessionAuthUserDetailsFilter(sessionManager);
     }
 
-    public MyFilter getMyFilter() {
+    public JSessionAuthUserDetailsFilter getMyFilter() {
         return myFilter;
     }
 

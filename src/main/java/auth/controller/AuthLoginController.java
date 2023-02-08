@@ -2,8 +2,8 @@ package auth.controller;
 
 import static auth.controller.AuthLoginControllerConstants.INDEX_HTML_URL;
 import static auth.controller.AuthLoginControllerConstants.LOGIN_FAIL_HTML_URL;
-import static infra.utils.response.ResponseUtils.make302ResponseHeader;
-import static infra.utils.response.ResponseUtils.make302ResponseWithCookie;
+import static infra.utils.response.Response302HeaderUtils.make302ResponseHeader;
+import static infra.utils.response.Response302HeaderUtils.make302ResponseWithCookie;
 
 import auth.AuthUserDetailsWithUuid;
 import auth.dto.AuthLoginUserDto;

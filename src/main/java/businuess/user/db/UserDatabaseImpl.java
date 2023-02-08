@@ -1,7 +1,7 @@
 package businuess.user.db;
 
 import auth.AuthUserDetails;
-import excpetion.DuplicateException;
+import businuess.excpetion.DuplicateException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

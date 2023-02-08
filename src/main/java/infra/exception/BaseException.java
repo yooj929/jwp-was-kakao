@@ -1,4 +1,4 @@
-package excpetion;
+package infra.exception;
 
 public abstract class BaseException extends RuntimeException{
 

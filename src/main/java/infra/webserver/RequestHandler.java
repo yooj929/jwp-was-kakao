@@ -34,9 +34,7 @@ public class RequestHandler implements Runnable {
             toFrontController(myRequest, dos);
         } catch (IOException e) {
             logger.error(e.getMessage());
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InvocationTargetException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
 

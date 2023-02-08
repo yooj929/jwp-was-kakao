@@ -1,5 +1,6 @@
-package excpetion;
+package businuess.excpetion;
 
+import infra.exception.BaseException;
 import org.springframework.http.HttpStatus;
 
 public class DuplicateException extends BaseException {
