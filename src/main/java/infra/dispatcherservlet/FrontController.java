@@ -1,23 +1,42 @@
 package infra.dispatcherservlet;
 
+import static infra.utils.response.ResponseUtils.makeErrorResponse;
+
+import businuess.statics.controller.StaticController;
 import excpetion.NotMatchException;
 import infra.controller.MyController;
 import infra.utils.request.MyRequest;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.io.DataOutputStream;
+import java.lang.reflect.InvocationTargetException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FrontController {
-    List<MyController> controllers;
 
-    public FrontController(MyController... collection) {
-        controllers = Arrays.stream(collection).collect(Collectors.toList());
+    private final HandlerAdaptor handlerAdaptor;
+    private final StaticController staticController;
+    private final Logger logger = LoggerFactory.getLogger(FrontController.class);
+
+    public FrontController(StaticController staticController, MyController... controllers) {
+        this.staticController = staticController;
+        this.handlerAdaptor = new HandlerAdaptor(controllers);
     }
 
-    public MyController findHandler(MyRequest myRequest) {
-        return controllers.stream()
-                .filter(con -> con.canHandle(myRequest))
-                .findFirst().orElseThrow(() -> new NotMatchException("Cannot find handler", "Can find Handler",
-                        FrontController.class.getSimpleName(),myRequest.getApi()));
+    public void handle(MyRequest myRequest, DataOutputStream dataOutputStream)
+            throws InvocationTargetException, IllegalAccessException {
+        boolean handled = handlerAdaptor.handle(myRequest, dataOutputStream);
+        if(!handled){
+            handleStatic(myRequest, dataOutputStream);
+        }
     }
+
+    private void handleStatic(MyRequest myRequest, DataOutputStream dataOutputStream) {
+        try {
+            staticController.handle(myRequest, dataOutputStream);
+        }catch(NotMatchException e){
+            makeErrorResponse(dataOutputStream, logger, e);
+            logger.error(e.getMessage());
+        }
+    }
+
 }

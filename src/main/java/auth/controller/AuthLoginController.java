@@ -2,14 +2,14 @@ package auth.controller;
 
 import static auth.controller.AuthLoginControllerConstants.INDEX_HTML_URL;
 import static auth.controller.AuthLoginControllerConstants.LOGIN_FAIL_HTML_URL;
-import static auth.controller.AuthLoginControllerMapper.isLogin;
 import static infra.utils.response.ResponseUtils.make302ResponseHeader;
 import static infra.utils.response.ResponseUtils.make302ResponseWithCookie;
 
 import auth.AuthUserDetailsWithUuid;
 import auth.dto.AuthLoginUserDto;
 import auth.service.AuthLoginService;
-import infra.controller.BaseMyController;
+import infra.controller.MyController;
+import infra.controller.MyPostMapping;
 import infra.utils.request.MyCookie;
 import infra.utils.request.MyRequest;
 import java.io.DataOutputStream;
@@ -17,7 +17,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AuthLoginController extends BaseMyController {
+public class AuthLoginController implements MyController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthLoginController.class);
     private static final String USER_ID = "userId";
@@ -25,24 +25,12 @@ public class AuthLoginController extends BaseMyController {
     private final AuthLoginService authLoginService;
 
     public AuthLoginController(AuthLoginService authLoginService) {
-        super(AuthLoginControllerApis.values());
         this.authLoginService = authLoginService;
     }
 
-    @Override
-    public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        map(myRequest, dataOutputStream);
-
-    }
-
-    public void map(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        if (isLogin(myRequest)) {
-            login(createAuthLoginUserDto(myRequest), dataOutputStream);
-        }
-    }
-
-    public void login(AuthLoginUserDto authLoginUserDto, DataOutputStream dataOutputStream) {
-        Optional<AuthUserDetailsWithUuid> loginUserDetails = authLoginService.login(authLoginUserDto);
+    @MyPostMapping(paths="/user/login")
+    public void login(MyRequest myRequest, DataOutputStream dataOutputStream) {
+        Optional<AuthUserDetailsWithUuid> loginUserDetails = authLoginService.login(createAuthLoginUserDto(myRequest));
         if (loginUserDetails.isPresent()) {
             MyCookie cookie = new MyCookie(loginUserDetails.get().getUuid());
             make302ResponseWithCookie(dataOutputStream, INDEX_HTML_URL.url(), cookie,logger);

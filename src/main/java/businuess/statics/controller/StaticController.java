@@ -1,6 +1,6 @@
 package businuess.statics.controller;
 
-import infra.controller.MyController;
+import excpetion.NotMatchException;
 import infra.utils.request.MyRequest;
 import infra.utils.response.ResponseUtils;
 import java.io.DataOutputStream;
@@ -8,23 +8,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 
-public class StaticController implements MyController {
+public class StaticController {
 
     private final Logger logger = LoggerFactory.getLogger(StaticController.class);
 
-    @Override
-    public boolean canHandle(MyRequest myRequest) {
-        return myRequest.isStatic();
-    }
-
-    @Override
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        String path = myRequest.getPath();
-        String contentType = myRequest.getHeader(HttpHeaders.ACCEPT);
-        handleStatic(path, contentType, dataOutputStream);
+        handleStatic(myRequest, dataOutputStream);
     }
 
-    private void handleStatic(String path, String contentType, DataOutputStream dataOutputStream){
-        ResponseUtils.make200StaticResponse(path, contentType, dataOutputStream, logger);
+    private void handleStatic(MyRequest request, DataOutputStream dataOutputStream) {
+        try {
+            ResponseUtils.make200StaticResponse(request.getPath(), request.getHeader(HttpHeaders.ACCEPT),
+                    dataOutputStream, logger);
+        } catch (NullPointerException nullPointerException) {
+            throw new NotMatchException("api cannot match", "api must be matched",
+                    StaticController.class.getSimpleName(), request.getApi());
+        }
     }
 }

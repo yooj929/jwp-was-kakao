@@ -137,6 +137,5 @@ public class ResponseUtils {
         } catch (IOException exception) {
             logger.error(exception.getMessage());
         }
-
     }
 }

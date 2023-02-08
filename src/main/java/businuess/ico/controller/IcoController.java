@@ -1,35 +1,20 @@
 package businuess.ico.controller;
 
-import static businuess.ico.controller.IcoControllerMapper.isIco;
 import static infra.utils.response.ResponseUtils.make200TemplatesResponse;
 
-import excpetion.NotMatchException;
-import infra.controller.BaseMyController;
+import infra.controller.MyController;
+import infra.controller.MyGetMapping;
 import infra.utils.request.MyRequest;
 import java.io.DataOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 
-public class IcoController extends BaseMyController {
+public class IcoController implements MyController {
 
-    private static final Logger logger = LoggerFactory.getLogger(IcoController.class);
-
-    public IcoController() {
-        super(IcoControllerApis.values());
-    }
-
-    @Override
-    public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
-        if (isIco(myRequest)) {
-            ico(myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT).split(",")[0], dataOutputStream);
-            return;
-        }
-        throw new NotMatchException("api cannot be match", "api should be matched",
-                IcoController.class.getSimpleName(),myRequest.getApi());
-    }
-
-    private void ico(String path, String contentType, DataOutputStream dataOutputStream) {
-        make200TemplatesResponse(path, contentType, dataOutputStream, logger);
+    private final Logger logger = LoggerFactory.getLogger(IcoController.class);
+    @MyGetMapping(paths = "/favicon.ico")
+    public void ico(MyRequest myRequest, DataOutputStream dataOutputStream) {
+        make200TemplatesResponse(myRequest.getPath(), myRequest.getHeader(HttpHeaders.ACCEPT), dataOutputStream, logger);
     }
 }

@@ -19,12 +19,12 @@ public class AppConfig {
         SessionManager sessionManager = SessionManager.getInstance();
         userConfig = UserConfig.getInstance();
         authConfig = AuthConfigProxy.createInstance(userConfig.getUserDatabase(), sessionManager);
-        controllerConfig = new ControllerConfig(
+        controllerConfig = new ControllerConfig(new StaticController(),
                 new HomeController(),
                 new IcoController(),
                 UserConfig.getInstance().getUserController(),
-                authConfig.getAuthLoginController(),
-                new StaticController());
+                authConfig.getAuthLoginController()
+        );
         postConstruct();
     }
 
@@ -57,15 +57,15 @@ public class AppConfig {
         return LazyHolder.instance;
     }
 
-    public ControllerConfig getControllerConfig() {
-        return controllerConfig;
-    }
-
     public UserConfig getUserConfig() {
         return userConfig;
     }
 
     public AuthConfig getAuthConfig() {
         return authConfig;
+    }
+
+    public ControllerConfig getControllerConfig() {
+        return controllerConfig;
     }
 }
