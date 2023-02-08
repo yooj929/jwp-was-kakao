@@ -114,11 +114,11 @@ public class ResponseUtils {
         }
     }
 
-    public static void make200ResponseWithUsersByHandleBars(String contentType, DataOutputStream dataOutputStream,
-                                                            List<UserResponseDto> users, Logger logger) {
+    public static void make200ResponseUserListView(String contentType, DataOutputStream dataOutputStream,
+                                                   List<UserResponseDto> users, Logger logger) {
         try {
             ClassPathTemplateLoader loader = new ClassPathTemplateLoader();
-            loader.setPrefix("/"+TEMPLATES);
+            loader.setPrefix("/" + TEMPLATES);
             loader.setSuffix(HTML_EXTENSION);
             Handlebars handlebars = new Handlebars(loader);
             handlebars.registerHelper("addOne", (context, options) -> (Integer) context + 1);
@@ -132,7 +132,7 @@ public class ResponseUtils {
 
     public static void makeErrorResponse(DataOutputStream dos, Logger logger, BaseException e) {
         try {
-            dos.writeBytes(String.format(HTTP_1_1_BASE, e.getStatusCode(), HttpStatus.valueOf(e.getStatusCode())));
+            dos.writeBytes(String.format(HTTP_1_1_BASE, HttpStatus.valueOf(e.getStatusCode())));
             dos.writeBytes("\r\n");
         } catch (IOException exception) {
             logger.error(exception.getMessage());

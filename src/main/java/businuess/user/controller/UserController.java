@@ -8,7 +8,7 @@ import static businuess.user.controller.UserControllerMapper.isUserForm;
 import static businuess.user.controller.UserControllerMapper.isUserList;
 import static businuess.user.controller.UserControllerMapper.isUserLogin;
 import static businuess.user.controller.UserControllerMapper.isUserLoginFailed;
-import static infra.utils.response.ResponseUtils.make200ResponseWithUsersByHandleBars;
+import static infra.utils.response.ResponseUtils.make200ResponseUserListView;
 import static infra.utils.response.ResponseUtils.make200TemplatesResponse;
 import static infra.utils.response.ResponseUtils.make302ResponseHeader;
 
@@ -71,7 +71,7 @@ public class UserController extends BaseMyController {
     private void userList(LoginUser user, String contentType, DataOutputStream dataOutputStream) {
         if (Objects.nonNull(user)) {
             List<UserResponseDto> users = userService.findAll();
-            make200ResponseWithUsersByHandleBars(contentType, dataOutputStream, users, logger);
+            make200ResponseUserListView(contentType, dataOutputStream, users, logger);
             return;
         }
         make302ResponseHeader(dataOutputStream, LOGIN_HTML_URL.url(), logger);
