@@ -19,7 +19,7 @@ public class AuthConfig {
     private final AuthLoginDatabase authLoginDatabase;
     private final MyFilter myFilter;
 
-    public AuthConfig(AuthLoginDatabase authLoginDatabase, SessionManager sessionManager) {
+    protected AuthConfig(AuthLoginDatabase authLoginDatabase, SessionManager sessionManager) {
         this.authLoginDatabase = authLoginDatabase;
         this.authLoginRepository = new AuthLoginRepositoryImpl(this.authLoginDatabase);
         this.authLoginDao = new AuthLoginDaoImpl(this.authLoginRepository);
