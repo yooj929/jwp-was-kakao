@@ -17,4 +17,12 @@ public class AuthLoginUserDto {
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String toString() {
+        return "AuthLoginUserDto{" +
+                "userId='" + userId + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

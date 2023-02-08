@@ -1,8 +1,8 @@
 package auth.filter;
 
 import auth.AuthUserDetails;
-import infra.session.Session;
 import infra.session.SessionManager;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class MyFilter {
@@ -13,19 +13,26 @@ public class MyFilter {
     public MyFilter(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
     }
+
     public AuthUserDetails isLoginUser(String data) {
         String[] cookies = data.split("; ");
-        for (String cookie : cookies) {
-            if (cookie.startsWith(JSESSIONID)){
-                String value = cookie.split("=")[1];
-                Session session = sessionManager.findSession(value);
-                if(Objects.nonNull(session)){
-                    return (AuthUserDetails) session.getAttribute(value);
-                }
-            }
+        String jSessionKeyAndValue = findSessionCookie(cookies);
+        if (Objects.nonNull(jSessionKeyAndValue)) {
+            String key = jSessionKeyAndValue.split("=")[1];
+            return (AuthUserDetails) sessionManager.findSession(key).getAttribute(key);
         }
         return null;
     }
 
+    private String findSessionCookie(String[] cookies) {
+        return Arrays.stream(cookies)
+                .filter(cookie ->
+                        cookie.startsWith(JSESSIONID))
+                .filter(jSessionCookie -> {
+                    String value = jSessionCookie.split("=")[1];
+                    return Objects.nonNull(sessionManager.findSession(value));
+                })
+                .findFirst().orElse(null);
+    }
 
 }
