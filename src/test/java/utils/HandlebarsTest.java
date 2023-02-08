@@ -1,7 +1,7 @@
 package utils;
 
-import businuess.user.User;
-import businuess.user.dto.UserResponseDto;
+import app.user.User;
+import app.user.dto.UserResponseDto;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.Helper;
 import com.github.jknack.handlebars.Options;

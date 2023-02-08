@@ -3,8 +3,8 @@ package db;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import auth.AuthUserDetails;
-import businuess.user.User;
-import businuess.user.db.UserDatabaseImpl;
+import app.user.User;
+import app.user.db.UserDatabaseImpl;
 import java.util.Collection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

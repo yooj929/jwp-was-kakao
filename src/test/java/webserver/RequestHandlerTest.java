@@ -2,7 +2,7 @@ package webserver;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import businuess.config.AppConfig;
+import app.config.AppConfig;
 import infra.utils.FileIoUtils;
 import infra.webserver.RequestHandler;
 import java.io.IOException;
