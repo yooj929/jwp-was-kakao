@@ -2,13 +2,13 @@ package auth.config;
 
 import auth.controller.AuthLoginController;
 import auth.dao.AuthLoginDao;
-import auth.dao.AuthLoginDaoImpl;
+import auth.dao.BaseAuthLoginDao;
 import auth.db.AuthLoginDatabase;
 import auth.filter.JSessionAuthUserDetailsFilter;
 import auth.repository.AuthLoginRepository;
-import auth.repository.AuthLoginRepositoryImpl;
+import auth.repository.BaseAuthLoginRepository;
 import auth.service.AuthLoginService;
-import auth.service.AuthLoginServiceImpl;
+import auth.service.BaseAuthLoginService;
 import infra.session.SessionManager;
 
 public class AuthConfig {
@@ -21,9 +21,9 @@ public class AuthConfig {
 
     protected AuthConfig(AuthLoginDatabase authLoginDatabase, SessionManager sessionManager) {
         this.authLoginDatabase = authLoginDatabase;
-        this.authLoginRepository = new AuthLoginRepositoryImpl(this.authLoginDatabase);
-        this.authLoginDao = new AuthLoginDaoImpl(this.authLoginRepository);
-        this.authLoginService = new AuthLoginServiceImpl(this.authLoginDao,sessionManager);
+        this.authLoginRepository = new BaseAuthLoginRepository(this.authLoginDatabase);
+        this.authLoginDao = new BaseAuthLoginDao(this.authLoginRepository);
+        this.authLoginService = new BaseAuthLoginService(this.authLoginDao,sessionManager);
         this.authLoginController = new AuthLoginController(this.authLoginService);
         this.myFilter = new JSessionAuthUserDetailsFilter(sessionManager);
     }

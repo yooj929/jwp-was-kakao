@@ -4,18 +4,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import auth.AuthUserDetails;
 import app.user.User;
-import app.user.db.UserDatabaseImpl;
+import app.user.db.BaseUserDatabase;
 import java.util.Collection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class UserDatabaseImplTest {
+class BaseUserDatabaseTest {
 
-    UserDatabaseImpl userDatabaseImpl = new UserDatabaseImpl();
+    BaseUserDatabase baseUserDatabase = new BaseUserDatabase();
 
     @BeforeEach
     void setUp() {
-        userDatabaseImpl.deleteAll();
+        baseUserDatabase.deleteAll();
     }
 
     @Test
@@ -29,7 +29,7 @@ class UserDatabaseImplTest {
                 .build();
 
         // when
-        User savedUser = (User) userDatabaseImpl.save(user);
+        User savedUser = (User) baseUserDatabase.save(user);
 
         // then
         assertThat(savedUser).isEqualTo(user);
@@ -47,8 +47,8 @@ class UserDatabaseImplTest {
                 .build();
 
         // when
-        User savedUser = (User) userDatabaseImpl.save(user);
-        User foundUser = (User) userDatabaseImpl.findById(user.getUserId()).get();
+        User savedUser = (User) baseUserDatabase.save(user);
+        User foundUser = (User) baseUserDatabase.findById(user.getUserId()).get();
 
         // then
         assertThat(foundUser).isEqualTo(savedUser);
@@ -72,11 +72,11 @@ class UserDatabaseImplTest {
                 .password("2")
                 .name("3")
                 .build();
-        userDatabaseImpl.save(user);
-        userDatabaseImpl.save(user2);
+        baseUserDatabase.save(user);
+        baseUserDatabase.save(user2);
 
         // when
-        Collection<AuthUserDetails> users = userDatabaseImpl.findAll();
+        Collection<AuthUserDetails> users = baseUserDatabase.findAll();
 
         // then
         assertThat(users.size()).isEqualTo(2);

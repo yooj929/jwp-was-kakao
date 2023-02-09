@@ -7,11 +7,11 @@ import app.user.dto.UserResponseDto;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserServiceImpl implements UserService {
+public class BaseUserService implements UserService {
 
     private final UserDao userDao;
 
-    public UserServiceImpl(UserDao userDao) {
+    public BaseUserService(UserDao userDao) {
         this.userDao = userDao;
 
     }

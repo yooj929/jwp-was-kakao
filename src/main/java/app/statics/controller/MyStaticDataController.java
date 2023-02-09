@@ -9,9 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 
-public class MyStaticControllerImpl implements MyStaticController {
+public class MyStaticDataController implements MyStaticController {
 
-    private final Logger logger = LoggerFactory.getLogger(MyStaticControllerImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(MyStaticDataController.class);
 
     @Override
     public void handle(MyRequest myRequest, DataOutputStream dataOutputStream) {
@@ -24,7 +24,7 @@ public class MyStaticControllerImpl implements MyStaticController {
                     dataOutputStream, logger);
         } catch (NullPointerException nullPointerException) {
             throw new NotMatchException("api cannot match", "api must be matched",
-                    MyStaticControllerImpl.class.getSimpleName(), request.getApi());
+                    MyStaticDataController.class.getSimpleName(), request.getApi());
         }
     }
 }

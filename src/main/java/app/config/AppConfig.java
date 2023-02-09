@@ -6,7 +6,7 @@ import auth.config.AuthConfigProxy;
 import auth.filter.JSessionAuthUserDetailsFilter;
 import app.home.controller.HomeController;
 import app.ico.controller.IcoController;
-import app.statics.controller.MyStaticControllerImpl;
+import app.statics.controller.MyStaticDataController;
 import app.user.User;
 import infra.session.SessionManager;
 import java.util.List;
@@ -21,7 +21,7 @@ public class AppConfig {
         SessionManager sessionManager = SessionManager.getInstance();
         userConfig = UserConfig.getInstance();
         authConfig = AuthConfigProxy.createInstance(userConfig.getUserDatabase(), sessionManager);
-        controllerConfig = ControllerConfigProxy.createControllerConfigProxy(new MyStaticControllerImpl(),
+        controllerConfig = ControllerConfigProxy.createControllerConfigProxy(new MyStaticDataController(),
                 List.of(new JSessionAuthUserDetailsFilter(sessionManager)),
                 new HomeController(),
                 new IcoController(),

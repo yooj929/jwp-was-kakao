@@ -5,11 +5,11 @@ import auth.AuthUserDetailsWithUuid;
 import auth.db.AuthLoginDatabase;
 import java.util.Optional;
 
-public class AuthLoginRepositoryImpl implements AuthLoginRepository {
+public class BaseAuthLoginRepository implements AuthLoginRepository {
 
     private final AuthLoginDatabase authLoginDatabase;
 
-    public AuthLoginRepositoryImpl(AuthLoginDatabase authLoginDatabase) {
+    public BaseAuthLoginRepository(AuthLoginDatabase authLoginDatabase) {
         this.authLoginDatabase = authLoginDatabase;
     }
 

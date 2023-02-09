@@ -4,11 +4,11 @@ import auth.AuthUserDetailsWithUuid;
 import auth.repository.AuthLoginRepository;
 import java.util.Optional;
 
-public class AuthLoginDaoImpl implements AuthLoginDao {
+public class BaseAuthLoginDao implements AuthLoginDao {
 
     private final AuthLoginRepository authLoginRepository;
 
-    public AuthLoginDaoImpl(AuthLoginRepository authLoginRepository) {
+    public BaseAuthLoginDao(AuthLoginRepository authLoginRepository) {
         this.authLoginRepository = authLoginRepository;
     }
 

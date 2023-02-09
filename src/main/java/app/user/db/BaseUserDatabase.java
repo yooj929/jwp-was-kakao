@@ -8,18 +8,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-public class UserDatabaseImpl implements UserDatabase{
+public class BaseUserDatabase implements UserDatabase{
 
     private final Map<String, AuthUserDetails> database;
 
-    public UserDatabaseImpl() {
+    public BaseUserDatabase() {
         database = new HashMap<>();
     }
 
     @Override
     public AuthUserDetails save(AuthUserDetails entity) {
         if (Objects.nonNull(database.get(entity.getUserId()))) {
-            throw new DuplicateException(UserDatabaseImpl.class.getSimpleName());
+            throw new DuplicateException(BaseUserDatabase.class.getSimpleName());
         }
         database.put(entity.getUserId(), entity);
         return entity;

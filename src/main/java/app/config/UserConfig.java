@@ -2,13 +2,13 @@ package app.config;
 
 import app.user.controller.UserController;
 import app.user.dao.UserDao;
-import app.user.dao.UserDaoImpl;
+import app.user.dao.BaseUserDao;
 import app.user.db.UserDatabase;
-import app.user.db.UserDatabaseImpl;
+import app.user.db.BaseUserDatabase;
 import app.user.repository.UserRepository;
-import app.user.repository.UserRepositoryImpl;
+import app.user.repository.BaseUserRepository;
 import app.user.service.UserService;
-import app.user.service.UserServiceImpl;
+import app.user.service.BaseUserService;
 
 public class UserConfig {
 
@@ -19,10 +19,10 @@ public class UserConfig {
     private final UserController userController;
 
     private UserConfig() {
-        userDatabase = new UserDatabaseImpl();
-        userRepository = new UserRepositoryImpl(userDatabase);
-        userDao = new UserDaoImpl(userRepository);
-        userService = new UserServiceImpl(userDao);
+        userDatabase = new BaseUserDatabase();
+        userRepository = new BaseUserRepository(userDatabase);
+        userDao = new BaseUserDao(userRepository);
+        userService = new BaseUserService(userDao);
         userController = new UserController(userService);
     }
 

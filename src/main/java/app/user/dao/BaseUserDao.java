@@ -4,11 +4,11 @@ import app.user.User;
 import app.user.repository.UserRepository;
 import java.util.List;
 
-public class UserDaoImpl implements UserDao {
+public class BaseUserDao implements UserDao {
 
     private final UserRepository userRepository;
 
-    public UserDaoImpl(UserRepository userRepository) {
+    public BaseUserDao(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

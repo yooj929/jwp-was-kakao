@@ -8,12 +8,12 @@ import infra.session.Session;
 import infra.session.SessionManager;
 import java.util.Optional;
 
-public class AuthLoginServiceImpl implements AuthLoginService {
+public class BaseAuthLoginService implements AuthLoginService {
 
     private final AuthLoginDao authLoginDao;
     private final SessionManager sessionManager;
 
-    public AuthLoginServiceImpl(AuthLoginDao authLoginDao, SessionManager sessionManager) {
+    public BaseAuthLoginService(AuthLoginDao authLoginDao, SessionManager sessionManager) {
         this.authLoginDao = authLoginDao;
         this.sessionManager = sessionManager;
     }

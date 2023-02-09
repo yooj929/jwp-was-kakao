@@ -6,11 +6,11 @@ import infra.db.Database;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserRepositoryImpl implements UserRepository {
+public class BaseUserRepository implements UserRepository {
 
     private final Database<AuthUserDetails> userDatabase;
 
-    public UserRepositoryImpl(Database<AuthUserDetails> userDatabase) {
+    public BaseUserRepository(Database<AuthUserDetails> userDatabase) {
         this.userDatabase = userDatabase;
     }
 
