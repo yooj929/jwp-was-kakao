@@ -9,7 +9,7 @@ import java.util.List;
 public class ControllerConfig {
     FrontController frontController;
 
-    public ControllerConfig(MyStaticController myStaticController, List<MyFilter> filters, MyController... controllers) {
+    protected ControllerConfig(MyStaticController myStaticController, List<MyFilter> filters, MyController... controllers) {
         this.frontController = new FrontController(myStaticController, filters,controllers);
     }
 

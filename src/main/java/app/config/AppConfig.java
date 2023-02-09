@@ -21,7 +21,7 @@ public class AppConfig {
         SessionManager sessionManager = SessionManager.getInstance();
         userConfig = UserConfig.getInstance();
         authConfig = AuthConfigProxy.createInstance(userConfig.getUserDatabase(), sessionManager);
-        controllerConfig = new ControllerConfig(new MyStaticControllerImpl(),
+        controllerConfig = ControllerConfigProxy.createControllerConfigProxy(new MyStaticControllerImpl(),
                 List.of(new JSessionAuthUserDetailsFilter(sessionManager)),
                 new HomeController(),
                 new IcoController(),
